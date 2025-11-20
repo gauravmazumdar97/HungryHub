@@ -2,9 +2,7 @@
 
 This project is aimed at building a full-fledged food ordering website using the Angular framework for the frontend, Node.js for the backend, and MongoDB for the database. The website will allow users to browse through various food items, place orders, and make payments online. The project is currently in Stage 1, focusing on the frontend development using Angular. Subsequent stages will involve the implementation of the backend using Node.js and integrating it with MongoDB.
 
-![Alt Test](ezgif.com-video-to-gif.gif)
-
-
+![Demo Video](assets/ezgif.com-video-to-gif.gif)
 
 ## Stage 1: Frontend (Angular)
 
@@ -57,19 +55,7 @@ At this stage, the frontend will include the following features:
 - Calculating the total price of the order.
 - Proceeding to the checkout page.
 
-## Stage 2: Backend (Node.js) and Database (MongoDB)
 
-The next stage of the project will focus on building the backend using Node.js and setting up the MongoDB database. The backend will handle user authentication, process orders, manage restaurant data, and interact with the database for data storage.
-
-## Future Development
-
-In the subsequent stages, we will work on the following features:
-
-- Implementing user authentication and authorization on the backend.
-- Building RESTful APIs for handling user registration, login, and order processing.
-- Integrating the backend with MongoDB for data storage.
-- Adding admin functionalities to manage restaurants and their menus.
-- Implementing real-time order tracking and notifications.
 
 Please note that this Readme will be updated as the project progresses through different stages.
 

@@ -1,0 +1,269 @@
+@startuml FoodOrderingApp_Backend
+!theme plain
+skinparam classAttributeIconSize 0
+
+package "Backend Models" {
+    interface User {
+        + id: string
+        + email: string
+        + password: string
+        + name: string
+        + address: string
+        + isAdmin: boolean
+    }
+
+    class UserSchema {
+        + name: String (required)
+        + email: String (required, unique)
+        + password: String (required)
+        + address: String (required)
+        + isAdmin: Boolean (required)
+        + timestamps: true
+    }
+
+    interface Food {
+        + id: string
+        + name: string
+        + price: number
+        + tags: string[]
+        + favorite: boolean
+        + imageUrl: string
+        + origins: string[]
+        + cookTime: string
+    }
+
+    class FoodSchema {
+        + name: String (required)
+        + price: Number (required)
+        + tags: [String]
+        + favorite: Boolean (default: false)
+        + imageUrl: String (required)
+        + origins: [String] (required)
+        + cookTime: String (required)
+        + timestamps: true
+    }
+}
+
+package "Backend Routers" {
+    class UserRouter {
+        + router: Router
+        + get("/seed"): void
+        + post("/login"): User
+        + post("/register"): User
+        - generateTokenResponse(user: User): User
+    }
+
+    class FoodRouter {
+        + router: Router
+        + get("/seed"): void
+        + get("/"): Food[]
+        + get("/search/:searchTerm"): Food[]
+        + get("/tags"): Tag[]
+        + get("/tag/:tagName"): Food[]
+        + get("/:foodId"): Food
+    }
+
+    class OrderRouter {
+        + router: Router
+        + post("/create"): Order
+        + get("/newOrderForCurrentUser"): Order
+        + post("/pay"): string
+        + get("/track/:id"): Order
+        - getNewOrderForCurrentUser(req: any): Order
+    }
+}
+
+class Server {
+    + app: Express
+    + use("/api/foods", foodRouter): void
+    + use("/api/users", userRouter): void
+    + listen(port: number): void
+}
+
+UserSchema ..|> User : implements
+FoodSchema ..|> Food : implements
+UserRouter --> User : uses
+FoodRouter --> Food : uses
+OrderRouter --> Order : uses
+Server --> UserRouter : uses
+Server --> FoodRouter : uses
+Server --> OrderRouter : uses
+
+@enduml
+
+@startuml FoodOrderingApp_Frontend
+!theme plain
+skinparam classAttributeIconSize 0
+
+package "Frontend Models" {
+    class User {
+        + id: string
+        + email: string
+        + name: string
+        + address: string
+        + token: string
+        + isAdmin: boolean
+    }
+
+    class Food {
+        + id: string
+        + name: string
+        + price: number
+        + tags?: string[]
+        + stars: number
+        + imageUrl: string
+        + origins: string[]
+        + cookTime: string
+    }
+
+    class CartItem {
+        + food: Food
+        + quantity: number
+        + price: number
+        + constructor(food: Food)
+    }
+
+    class Cart {
+        + items: CartItem[]
+        + totalPrice: number
+        + totalCount: number
+    }
+
+    class Order {
+        + id: number
+        + items: CartItem[]
+        + totalPrice: number
+        + name: string
+        + address: string
+        + addressLatLng?: LatLng
+        + paymentId: string
+        + createdAt: string
+        + status: string
+    }
+
+    class Tag {
+        + name: string
+        + count: number
+    }
+}
+
+package "Frontend Services" {
+    class UserService {
+        - userSubject: BehaviorSubject<User>
+        + userObservable: Observable<User>
+        + get currentUser(): User
+        + login(userLogin: IUserLogin): Observable<User>
+        + register(userRegister: IUserRegister): Observable<User>
+        + logout(): void
+        - setUserToLocalStorage(user: User): void
+        - getUserFromLocalStorage(): User
+    }
+
+    class FoodService {
+        - http: HttpClient
+        + getAll(): Observable<Food[]>
+        + getAllFoodBySearchItem(searchTerm: string): Observable<Food[]>
+        + getAllTags(): Observable<Tag[]>
+        + getAllFoodsByTag(tag: string): Observable<Food[]>
+        + getFoodById(foodId: string): Observable<Food>
+    }
+
+    class CartService {
+        - cart: Cart
+        - cartSubject: BehaviorSubject<Cart>
+        + addToCart(food: Food): void
+        + removeFromCart(foodId: string): void
+        + changeQuantity(foodId: string, quantity: number): void
+        + clearCart(): void
+        + getCart(): Cart
+        + getCartObservable(): Observable<Cart>
+        - setCartToLocalStorage(): void
+        - getCartFromLocalStorage(): Cart
+    }
+
+    class OrderService {
+        - http: HttpClient
+        + create(order: Order): Observable<Order>
+    }
+}
+
+package "Frontend Components" {
+    class HomeComponent {
+        - foodService: FoodService
+        - activatedRoute: ActivatedRoute
+        + foods: Food[]
+        + ngOnInit(): void
+    }
+
+    class FoodPageComponent {
+        - foodService: FoodService
+        - cartService: CartService
+        - activatedRoute: ActivatedRoute
+        + food: Food
+        + ngOnInit(): void
+        + addToCart(): void
+    }
+
+    class CartPageComponent {
+        - cartService: CartService
+        + cart: Cart
+        + ngOnInit(): void
+        + removeFromCart(foodId: string): void
+        + changeQuantity(foodId: string, quantity: number): void
+    }
+
+    class LoginPageComponent {
+        - userService: UserService
+        - formBuilder: FormBuilder
+        + loginForm: FormGroup
+        + isSubmitted: boolean
+        + ngOnInit(): void
+        + submit(): void
+        + get fc(): AbstractControl
+    }
+
+    class RegisterPageComponent {
+        - userService: UserService
+        - formBuilder: FormBuilder
+        + registerForm: FormGroup
+        + isSubmitted: boolean
+        + ngOnInit(): void
+        + submit(): void
+        + get fc(): AbstractControl
+    }
+
+    class CheckoutPageComponent {
+        - cartService: CartService
+        - userService: UserService
+        - orderService: OrderService
+        + cart: Cart
+        + user: User
+        + ngOnInit(): void
+        + createOrder(): void
+    }
+}
+
+' Relationships
+Cart "1" *-- "many" CartItem : contains
+CartItem "1" --> "1" Food : contains
+Order "1" *-- "many" CartItem : contains
+
+UserService --> User : manages
+FoodService --> Food : manages
+FoodService --> Tag : manages
+CartService --> Cart : manages
+CartService --> CartItem : manages
+OrderService --> Order : manages
+
+HomeComponent --> FoodService : uses
+FoodPageComponent --> FoodService : uses
+FoodPageComponent --> CartService : uses
+CartPageComponent --> CartService : uses
+LoginPageComponent --> UserService : uses
+RegisterPageComponent --> UserService : uses
+CheckoutPageComponent --> CartService : uses
+CheckoutPageComponent --> UserService : uses
+CheckoutPageComponent --> OrderService : uses
+
+@enduml
+
