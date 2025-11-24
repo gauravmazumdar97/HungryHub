@@ -27,3 +27,27 @@ body{
 a{
     text-decoration: none;
 }
+
+body.dark-mode {
+  background-color: #121212;
+  background-image: none;
+  color: rgba(61, 148, 252, 100);
+}
+
+body.dark-mode a {
+  color: rgba(61, 148, 252,100);
+}
+
+body.dark-mode img {
+  filter: brightness(0.8);
+}
+
+body.dark-mode ul:not(nav ul) {
+  background-color: #281e1e;
+}
+
+body.dark-mode button {
+  background-color: #333;
+  color: rgba(61, 148, 252, 100);
+}
+ 

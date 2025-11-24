@@ -3,6 +3,13 @@
         <a routerLink="/" class="logo"> Food Wave</a>
         <nav>
             <ul>
+                <label class="dark-mode-label">
+                    {{ isDarkMode ? 'Dark Mode ON' : 'Dark Mode OFF' }}
+                    <span class="dark-mode-switch">
+                    <input type="checkbox" [checked]="isDarkMode" (change)="darkModeToggle.emit()" />
+                    <span class="slider"></span>
+                  </span>
+                  </label>
               
                 <li *ngIf="!isAuth">
                     <a routerLink="/login">Login</a>
