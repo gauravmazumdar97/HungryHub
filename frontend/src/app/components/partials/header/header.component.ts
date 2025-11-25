@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { CartService } from 'src/app/services/cart.service';
 import { UserService } from 'src/app/services/user.service';
 import { User } from '../../../shared/models/user';
@@ -10,8 +10,6 @@ import { User } from '../../../shared/models/user';
 })
 export class HeaderComponent implements OnInit{
 
-  @Output() darkModeToggle = new EventEmitter<void>();
-  @Input() isDarkMode: boolean = false;
   cartQuantity=0;
   user!:User;
   constructor(cartService:CartService,private userService:UserService) { 

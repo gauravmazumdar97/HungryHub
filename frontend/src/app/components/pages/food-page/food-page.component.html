@@ -12,7 +12,14 @@
             <span class="name">
                 {{food.name}}
             </span>
-            
+            <button 
+                class="favorite-btn" 
+                *ngIf="isLoggedIn"
+                (click)="toggleFavorite()"
+                [class.active]="isFavorite">
+                <i class="fas" [ngClass]="isFavorite ? 'fa-heart' : 'fa-heart'"></i>
+                <span>{{isFavorite ? 'Remove from Wishlist' : 'Add to Wishlist'}}</span>
+            </button>
         </div>
         <div class="origin">
             <span *ngFor="let origin of food.origins">

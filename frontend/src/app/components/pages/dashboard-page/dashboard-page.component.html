@@ -1,0 +1,123 @@
+<app-title [title]="isAdmin ? 'Admin Dashboard' : 'My Dashboard'" margin="1.5rem 0 0 2.5rem"></app-title>
+
+<div *ngIf="isLoading" class="loading-container">
+  <app-loading></app-loading>
+</div>
+
+<div *ngIf="!isLoading && analytics" class="dashboard-container">
+  <!-- Admin Overview -->
+  <div *ngIf="isAdmin && analytics.overview" class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon">📦</div>
+      <div class="stat-info">
+        <h3>{{analytics.overview.totalOrders}}</h3>
+        <p>Total Orders</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">👥</div>
+      <div class="stat-info">
+        <h3>{{analytics.overview.totalUsers}}</h3>
+        <p>Total Users</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🍽️</div>
+      <div class="stat-info">
+        <h3>{{analytics.overview.totalFoods}}</h3>
+        <p>Total Foods</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">❤️</div>
+      <div class="stat-info">
+        <h3>{{analytics.overview.totalWishlists}}</h3>
+        <p>Wishlists</p>
+      </div>
+    </div>
+    <div class="stat-card revenue">
+      <div class="stat-icon">💰</div>
+      <div class="stat-info">
+        <h3>{{analytics.overview.totalRevenue | currency}}</h3>
+        <p>Total Revenue</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- User Stats -->
+  <div *ngIf="!isAdmin && analytics.userStats" class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon">📦</div>
+      <div class="stat-info">
+        <h3>{{analytics.userStats.totalOrders}}</h3>
+        <p>My Orders</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">💰</div>
+      <div class="stat-info">
+        <h3>{{analytics.userStats.totalSpent | currency}}</h3>
+        <p>Total Spent</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">❤️</div>
+      <div class="stat-info">
+        <h3>{{analytics.userStats.wishlistCount}}</h3>
+        <p>Wishlist Items</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">⏳</div>
+      <div class="stat-info">
+        <h3>{{analytics.userStats.pendingOrders}}</h3>
+        <p>Pending Orders</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Popular Foods (Admin) -->
+  <div *ngIf="isAdmin && analytics.popularFoods && analytics.popularFoods.length" class="section">
+    <h2 class="section-title">Popular Foods</h2>
+    <div class="popular-foods">
+      <div *ngFor="let item of analytics.popularFoods" class="popular-food-card">
+        <img [src]="item.food.imageUrl" [alt]="item.food.name">
+        <div class="food-info">
+          <h4>{{item.food.name}}</h4>
+          <p>Quantity: {{item.totalQuantity}}</p>
+          <p class="revenue">Revenue: {{item.totalRevenue | currency}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Orders -->
+  <div *ngIf="analytics.recentOrders && analytics.recentOrders.length" class="section">
+    <h2 class="section-title">{{isAdmin ? 'Recent Orders' : 'My Recent Orders'}}</h2>
+    <div class="orders-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th *ngIf="isAdmin">User</th>
+            <th>Items</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of analytics.recentOrders">
+            <td>{{order.id || order._id}}</td>
+            <td *ngIf="isAdmin">{{order.user?.name || 'N/A'}}</td>
+            <td>{{order.items?.length || 0}}</td>
+            <td>{{order.totalPrice | currency}}</td>
+            <td><span class="status-badge" [class]="'status-' + order.status.toLowerCase()">{{order.status}}</span></td>
+            <td>{{order.createdAt | date:'short'}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+

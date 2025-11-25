@@ -47,8 +47,7 @@ router.post('/register', asyncHandler(
 
     const encryptedPassword = await bcrypt.hash(password, 10);
 
-    const newUser:User = {
-      id:'',
+    const newUser = {
       name,
       email: email.toLowerCase(),
       password: encryptedPassword,
@@ -61,15 +60,22 @@ router.post('/register', asyncHandler(
   }
 ))
 
-  const generateTokenReponse = (user : User) => {
+  const generateTokenReponse = (user: any) => {
+    const userId = user._id ? user._id.toString() : user.id;
+    const JWT_SECRET = process.env.JWT_SECRET;
+    
+    if (!JWT_SECRET) {
+      throw new Error('JWT_SECRET is not defined in environment variables. Please create a .env file in the backend folder with JWT_SECRET=your_secret_key');
+    }
+    
     const token = jwt.sign({
-      id: user.id, email:user.email, isAdmin: user.isAdmin
-    },process.env.JWT_SECRET!,{
-      expiresIn:"30d"
+      id: userId, email: user.email, isAdmin: user.isAdmin
+    }, JWT_SECRET, {
+      expiresIn: "30d"
     });
   
     return {
-      id: user.id,
+      id: userId,
       email: user.email,
       name: user.name,
       address: user.address,

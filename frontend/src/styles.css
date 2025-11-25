@@ -1,53 +1,129 @@
 /* You can add global styles to this file, and also import other style files */
-@import url("https://fonts.googleapis.com/css2?family=Crimson+Pro");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap");
 
 *{
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 html{
     font-size: 16px;
+    scroll-behavior: smooth;
 }
 
 html,
-button{
-    font-family: "Crimson-Pro", "sans-serif";
+button,
+input,
+select,
+textarea{
+    font-family: "Poppins", sans-serif;
+    color: var(--text-color);
+    transition: color 0.5s ease;
+}
+
+/* Apply dynamic text color to common text elements */
+h1, h2, h3, h4, h5, h6, p, span, div, a, li, td, th {
+    color: inherit;
+}
+
+:root {
+    --text-color: #1a1a1a;
+    --text-color-secondary: #4a4a4a;
+    --bg-overlay: rgba(255, 255, 255, 0.15);
 }
 
 body{
-    margin:0;
-    background-image: url('/assets/cuisine.jpeg');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
+    margin: 0;
+    background: transparent;
     min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+    color: var(--text-color);
+    transition: color 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 a{
     text-decoration: none;
+    transition: all 0.3s ease;
 }
 
-body.dark-mode {
-  background-color: #121212;
-  background-image: none;
-  color: rgba(61, 148, 252, 100);
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
 }
 
-body.dark-mode a {
-  color: rgba(61, 148, 252,100);
+::-webkit-scrollbar-track {
+    background: #f8f9fa;
 }
 
-body.dark-mode img {
-  filter: brightness(0.8);
+::-webkit-scrollbar-thumb {
+    background: #FF6B35;
+    border-radius: 10px;
 }
 
-body.dark-mode ul:not(nav ul) {
-  background-color: #281e1e;
+::-webkit-scrollbar-thumb:hover {
+    background: #F7931E;
 }
 
-body.dark-mode button {
-  background-color: #333;
-  color: rgba(61, 148, 252, 100);
+/* Responsive Design */
+@media (max-width: 768px) {
+    html {
+        font-size: 14px;
+    }
+
+    body {
+        background-size: 300% 300%;
+    }
 }
- 
+
+@media (max-width: 480px) {
+    html {
+        font-size: 12px;
+    }
+}
+
+/* Smooth transitions for all interactive elements */
+button, a, input, select {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Focus styles for accessibility */
+*:focus-visible {
+    outline: 2px solid #667eea;
+    outline-offset: 2px;
+    border-radius: 4px;
+}

@@ -31,4 +31,9 @@ export const FoodSchema = new Schema<Food>(
     }
 );
 
+// Create virtual id field that maps to _id
+FoodSchema.virtual('id').get(function() {
+    return this._id.toHexString();
+});
+
 export const FoodModel = model<Food>('food', FoodSchema);

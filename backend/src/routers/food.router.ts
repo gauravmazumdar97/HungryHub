@@ -7,12 +7,16 @@ const router = Router();
 router.get("/seed", asyncHandler(
  async (req, res) => {
     const foodsCount = await FoodModel.countDocuments();
+    console.log(`[foods] GET /seed - Current foods count: ${foodsCount}`);
     if(foodsCount> 0){
       res.send("Seed is already done!");
       return;
     }
 
-    await FoodModel.create(sample_foods);
+    // Remove 'id' field from sample_foods as MongoDB will create _id automatically
+    const foodsToInsert = sample_foods.map(({id, ...food}) => food);
+    const createdFoods = await FoodModel.create(foodsToInsert);
+    console.log(`[foods] GET /seed - Created ${createdFoods.length} foods`);
     res.send("Seed Is Done!");
 }
 ))
@@ -21,7 +25,8 @@ router.get("/seed", asyncHandler(
 router.get("/",asyncHandler(
   async (req, res) => {
     const foods = await FoodModel.find();
-      res.send(foods);
+    console.log(`[foods] GET / - Found ${foods.length} foods`);
+    res.send(foods);
   }
 ))
 

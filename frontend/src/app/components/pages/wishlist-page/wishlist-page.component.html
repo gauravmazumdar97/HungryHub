@@ -1,0 +1,47 @@
+<app-title title="My Wishlist" margin="1.5rem 0 0 2.5rem"></app-title>
+
+<app-not-found
+  [visible]="!isLoading && (!wishlistItems || !wishlistItems.length)"
+  notFoundMessage="Your Wishlist Is Empty!"
+  resetLinkText="Browse Foods">
+</app-not-found>
+
+<div *ngIf="isLoading" class="loading-container">
+  <app-loading></app-loading>
+</div>
+
+<div *ngIf="!isLoading && wishlistItems && wishlistItems.length" class="container">
+  <ul>
+    <li *ngFor="let item of wishlistItems">
+      <a routerLink="/food/{{item.food.id}}">
+        <img [src]="item.food.imageUrl" [alt]="item.food.name">
+      </a>
+      <div class="content">
+        <a routerLink="/food/{{item.food.id}}" class="name">
+          {{item.food.name}}
+        </a>
+        <div class="details">
+          <div class="origins">
+            <span *ngFor="let origin of item.food.origins">
+              {{origin}}
+            </span>
+          </div>
+          <div class="cook-time">
+            <span>🕒</span>
+            {{item.food.cookTime}}
+          </div>
+        </div>
+        <div class="price">
+          {{item.food.price | currency}}
+        </div>
+        <div class="actions">
+          <button class="remove-btn" (click)="removeFromWishlist(item.food.id)">
+            <i class="fas fa-trash"></i>
+            Remove
+          </button>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+

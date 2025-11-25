@@ -4,285 +4,220 @@ ul{
     align-items: center;
     flex-wrap: wrap;
     list-style-type: none;
-    padding: 2rem;
-    margin: 0;
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 2rem;
-    margin: 2rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 3rem 2rem;
+    margin: 2rem auto;
+    max-width: 1400px;
+    gap: 2rem;
+    animation: fadeIn 0.6s ease;
 }
 
+li {
+    animation: scaleIn 0.5s ease;
+    animation-fill-mode: both;
+}
+
+li:nth-child(1) { animation-delay: 0.1s; }
+li:nth-child(2) { animation-delay: 0.2s; }
+li:nth-child(3) { animation-delay: 0.3s; }
+li:nth-child(4) { animation-delay: 0.4s; }
+li:nth-child(5) { animation-delay: 0.5s; }
+li:nth-child(6) { animation-delay: 0.6s; }
+li:nth-child(n+7) { animation-delay: 0.7s; }
+
 li a{
-    height: 22.5rem;
-    width: 20rem;
-    border: 1px solid rgb(245, 245, 245);
-    border-radius: 1rem;
-    margin: 0.5rem;
+    height: 28rem;
+    width: 22rem;
+    border: none;
+    border-radius: 12px;
+    margin: 0;
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    color:rgba(35, 43, 194, 0.336);
-    background: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    color: #333;
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
 }
 
 li a:hover{
-    opacity: 0.9;
     cursor: pointer;
-    transform: translateY(-5px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    border-color: #FF6B35;
 }
 
 li a img{
     object-fit: cover;
-    height: 14.5rem;
+    height: 16rem;
+    width: 100%;
+    transition: transform 0.4s ease;
+    position: relative;
+    z-index: 0;
+}
 
+li a:hover img {
+    transform: scale(1.1);
 }
 
 .content{
-    margin-top: 0.3rem;
-    padding: 0.5rem 1rem;
+    margin-top: 0;
+    padding: 1.2rem;
     position: relative;
-    height: 6rem;
-    color: rgb(35, 110, 153);
+    height: auto;
+    min-height: 12rem;
+    color: var(--text-color);
+    z-index: 2;
+    background: rgba(255, 255, 255, 0.98);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: color 0.5s ease;
 }
 
-.favorite{
+.name {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 0.8rem;
+    transition: color 0.5s ease;
+}
+
+.favorite-btn {
     position: absolute;
-    top: 0.5rem;
+    top: 1rem;
     right: 1rem;
-    font-size: 1.2rem;
-
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
-.favorite.not{
-    color: grey;
+.favorite-btn i {
+    font-size: 1.2rem;
+    color: #6c757d;
+    transition: all 0.3s ease;
+}
+
+.favorite-btn:hover {
+    transform: scale(1.1);
+    background: rgba(255, 255, 255, 1);
+}
+
+.favorite-btn.active i {
+    color: #FF6B35;
+}
+
+.favorite-btn.active {
+    background: rgba(255, 107, 53, 0.1);
 }
 
 .product-item-footer{
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    margin-top: 0.8rem;
+    gap: 1rem;
 }
 
 .origins{
     flex: 9;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
 }
 
 .origins span{
-    border-radius: 2rem;
-    background-color: whitesmoke;
+    border-radius: 4px;
+    background: #f8f9fa;
+    color: #495057;
     display: inline-block;
-    font-size: 0.8rem;
-    color: grey;
-    margin-right: 0.3rem;
-    padding: 0 0.5rem;
-    margin-top: 0.2rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.3rem 0.8rem;
+    border: 1px solid #e9ecef;
+    transition: all 0.2s ease;
+}
 
+.origins span:hover {
+    background: #FF6B35;
+    color: white;
+    border-color: #FF6B35;
 }
 
 .cook-time{
-    font-size:0.9rem;
+    font-size: 0.9rem;
     flex: 3;
     text-align: right;
+    color: #718096;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    justify-content: flex-end;
+}
+
+.cook-time span {
+    font-size: 1.1rem;
 }
 
 .price{
     position: absolute;
-    bottom:0;
-    left:0.9rem;
-    background: white;
-    padding: 0.2rem 100% 0 0;
-    color: #414141;
-    margin-top: 0.3rem;
-    font-size: 1rem;
-}
-.filter-container {
-  margin-bottom: 1rem;
-}
-
-.filter-container input {
-  width: 100%;
-  padding: 0.5rem 1rem;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+    bottom: 1.2rem;
+    left: 1.2rem;
+    background: #FF6B35;
+    color: white;
+    padding: 0.5rem 1.2rem;
+    border-radius: 6px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
+    z-index: 3;
+    transition: all 0.2s ease;
 }
 
-.btn {
-  padding: 5px 15px;
-  cursor: pointer;
-  border: none;
-  border-radius: 4px;
-  background-color: #4b6cb7;
-  color: white;
-  margin-bottom: 10px;
-}
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(3px);
-  z-index: 1000;
+li a:hover .price {
+    background: #F7931E;
 }
 
-/* Modal */
-.modal {
-  width: 420px;
-  background: #fff;
-  border-radius: 12px;
-  padding: 18px 22px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-  animation: fadeIn 0.25s ease;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+/* Responsive Design */
+@media (max-width: 768px) {
+    ul {
+        padding: 2rem 1rem;
+        gap: 1.5rem;
+    }
+
+    li a {
+        width: 18rem;
+        height: 26rem;
+    }
+
+    li a img {
+        height: 14rem;
+    }
 }
 
-/* Modal Header */
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #eee;
-}
+@media (max-width: 480px) {
+    ul {
+        padding: 1.5rem 0.5rem;
+        gap: 1rem;
+    }
 
-.modal-header h3 {
-  margin: 0;
-  font-size: 20px;
-  font-weight: 600;
+    li a {
+        width: 100%;
+        max-width: 20rem;
+        height: auto;
+        min-height: 24rem;
+    }
 }
-
-.modal-header .close {
-  cursor: pointer;
-  font-size: 22px;
-  font-weight: bold;
-  opacity: 0.7;
-  transition: 0.2s;
-}
-
-.modal-header .close:hover {
-  opacity: 1;
-}
-
-/* Modal Body */
-.modal-body label {
-  display: block;
-  font-weight: 500;
-  margin-bottom: 4px;
-}
-
-.modal-body select,
-.modal-body input {
-  width: 100%;
-  padding: 8px 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
-  background: #fafafa;
-  transition: border 0.2s;
-}
-
-.modal-body select:focus,
-.modal-body input:focus {
-  border-color: #007bff;
-  outline: none;
-  background: white;
-}
-
-.price-range {
-  display: flex;
-  gap: 10px;
-}
-
-/* Modal Footer */
-.modal-footer {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  padding-top: 10px;
-  border-top: 1px solid #eee;
-}
-
-.btn-primary {
-  background: #007bff;
-  color: white;
-  padding: 8px 14px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.btn-primary:hover {
-  background: #0064d6;
-}
-
-.btn-secondary {
-  background: #e6e6e6;
-  color: #333;
-  padding: 8px 14px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.btn-secondary:hover {
-  background: #d1d1d1;
-}
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-
-.btn-primary {
-  background-color: #4b6cb7;
-  color: white;
-}
-
-.btn-secondary {
-  background-color: #ccc;
-  color: #333;
-}
-.top-bar {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.btn-filter {
-  margin-top: 35px;
-  margin-left: 20px;
-  padding: 18px 17px;
-  border-radius: 27px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.btn-filter:hover {
-  background-color: #0056b3;
-}
-
-.food-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.food-item {
-  width: 340px;
-  cursor: grab;
-}
- 

@@ -1,28 +1,86 @@
 table{
     width: 100%;
-    border: 1px solid #eeeeee;
-    margin-top: 1rem;
-    border-radius: 5px;
-    padding: 0.5rem 1rem;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 1.5rem;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e9ecef;
   }
   
   h3{
     margin-top: 0.5rem;
     margin-left: 0.3rem;
-    color: grey;
+    color: #212529;
+    font-weight: 700;
+    font-size: 1.5rem;
   }
   
+  tr {
+    transition: all 0.3s ease;
+  }
+
+  tr:not(:first-child):hover {
+    background: #f8f9fa;
+  }
+
+  tr:first-child {
+    background: #f8f9fa;
+  }
+  
+  a{
+    transition: all 0.2s ease;
+    display: inline-block;
+    text-decoration: none;
+  }
+
   a:hover{
-    opacity: 0.9;
+    color: #FF6B35;
   }
   
   td{
-    height: 3rem;
+    height: 4rem;
+    padding: 1rem;
+    color: #212529;
+    font-weight: 500;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+    font-size: 1.2rem;
+    background: #f8f9fa;
+    font-weight: 600;
+  }
+
+  tr:last-child td:last-child {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #FF6B35;
   }
   
   td img{
-    width: 3rem;
-    height: 3rem;
+    width: 4rem;
+    height: 4rem;
     object-fit: cover;
-    border-radius: 100rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+  }
+
+  td img:hover {
+    transform: scale(1.1);
+  }
+
+  td a {
+    color: #212529;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s ease;
+  }
+
+  td a:hover {
+    color: #FF6B35;
   }

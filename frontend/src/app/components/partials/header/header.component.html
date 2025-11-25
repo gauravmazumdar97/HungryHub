@@ -1,32 +1,51 @@
 <header>
     <div class="container">
-        <a routerLink="/" class="logo"> Food Wave</a>
+        <a routerLink="/" class="logo">
+            <span class="logo-text">Hungry<span class="logo-hub">Hub</span></span>
+        </a>
         <nav>
             <ul>
-                <label class="dark-mode-label">
-                    {{ isDarkMode ? 'Dark Mode ON' : 'Dark Mode OFF' }}
-                    <span class="dark-mode-switch">
-                    <input type="checkbox" [checked]="isDarkMode" (change)="darkModeToggle.emit()" />
-                    <span class="slider"></span>
-                  </span>
-                  </label>
               
                 <li *ngIf="!isAuth">
-                    <a routerLink="/login">Login</a>
+                    <a routerLink="/login">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Login</span>
+                    </a>
                 </li>
               
+                <li *ngIf="isAuth">
+                    <a routerLink="/wishlist" class="wishlist-link">
+                        <i class="fas fa-heart"></i>
+                        <span>Wishlist</span>
+                    </a>
+                </li>
+
                 <li *ngIf="isAuth" class="menu-container">
-                    <a routerLink="/dashboard">{{user.name}}</a>
+                    <a routerLink="/dashboard">
+                        <i class="fas fa-user-circle"></i>
+                        <span>{{user.name}}</span>
+                    </a>
                     <div class="menu">
-                        <a routerLink="/profile">Profile</a>
-                        <a routerLink="/orders">Orders</a>
-                        <a (click)="logout()">Logout</a>
+                        <a routerLink="/dashboard">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Dashboard</span>
+                        </a>
+                        <a routerLink="/orders">
+                            <i class="fas fa-receipt"></i>
+                            <span>Orders</span>
+                        </a>
+                        <a (click)="logout()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </a>
                     </div>
                 </li>
               
                 <li>
-                    <a routerLink="/cart-page">
-                        Cart <span *ngIf="cartQuantity">{{cartQuantity}}</span>
+                    <a routerLink="/cart-page" class="cart-link">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>Cart</span>
+                        <span class="cart-badge" *ngIf="cartQuantity">{{cartQuantity}}</span>
                     </a>
                 </li>
             </ul>

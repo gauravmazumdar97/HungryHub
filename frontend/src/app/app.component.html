@@ -1,9 +1,4 @@
-<div [class.dark-mode]="isDarkMode">
-    <app-loading></app-loading>
-    <app-header
-      [isDarkMode]="isDarkMode"
-      (darkModeToggle)="toggleDarkMode()">
-    </app-header>
-    <router-outlet></router-outlet>
-  </div>
-  
+<app-dynamic-background></app-dynamic-background>
+<app-loading></app-loading>
+<app-header></app-header>
+<router-outlet></router-outlet>

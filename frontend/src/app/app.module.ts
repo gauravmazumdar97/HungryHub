@@ -14,7 +14,7 @@ import { CartPageComponent } from './components/pages/cart-page/cart-page.compon
 import { TitleComponent } from './components/partials/title/title.component';
 import { NotFoundComponent } from './components/partials/not-found/not-found.component';
 import { LoginPageComponent } from './components/pages/login-page/login-page.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { InputContainerComponent } from './components/partials/input-container/input-container.component';
@@ -24,8 +24,12 @@ import { DefaultButtonComponent } from './components/partials/default-button/def
 import { RegisterPageComponent } from './components/pages/register-page/register-page.component';
 import { LoadingComponent } from './components/partials/loading/loading.component';
 import { LoadingInterceptor } from './shared/interceptors/loading.interceptor';
+import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
 import { CheckoutPageComponent } from './components/pages/checkout-page/checkout-page.component';
 import { OrderItemsListComponent } from './components/partials/order-items-list/order-items-list.component';
+import { DynamicBackgroundComponent } from './components/partials/dynamic-background/dynamic-background.component';
+import { WishlistPageComponent } from './components/pages/wishlist-page/wishlist-page.component';
+import { DashboardPageComponent } from './components/pages/dashboard-page/dashboard-page.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +51,9 @@ import { OrderItemsListComponent } from './components/partials/order-items-list/
     LoadingComponent,
     CheckoutPageComponent,
     OrderItemsListComponent,
+    DynamicBackgroundComponent,
+    WishlistPageComponent,
+    DashboardPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -60,11 +67,11 @@ import { OrderItemsListComponent } from './components/partials/order-items-list/
       timeOut:3000,
       positionClass:'toast-bottom-right',
       newestOnTop:false
-    }),
-    FormsModule,
+    })
   ],
   providers: [
-    {provide:HTTP_INTERCEPTORS, useClass:LoadingInterceptor, multi: true }
+    {provide:HTTP_INTERCEPTORS, useClass:LoadingInterceptor, multi: true },
+    {provide:HTTP_INTERCEPTORS, useClass:AuthInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

@@ -3,13 +3,18 @@ import asyncHandler from 'express-async-handler';
 import { HTTP_BAD_REQUEST } from '../constants/http_status';
 import { OrderStatus } from '../constants/order_status';
 import { OrderModel } from '../models/order.model';
-import auth from '../middlewares/auth.mid';
+import auth, { AuthRequest } from '../middlewares/auth.mid';
 
 const router = Router();
 router.use(auth);
 
 router.post('/create',
-asyncHandler(async (req:any, res:any) => {
+asyncHandler(async (req: AuthRequest, res) => {
+    if (!req.user) {
+        res.status(401).send('Unauthorized');
+        return;
+    }
+
     const requestOrder = req.body;
 
     if(requestOrder.items.length <= 0){
@@ -29,13 +34,21 @@ asyncHandler(async (req:any, res:any) => {
 )
 
 
-router.get('/newOrderForCurrentUser', asyncHandler( async (req:any,res ) => {
+router.get('/newOrderForCurrentUser', asyncHandler( async (req: AuthRequest, res) => {
+    if (!req.user) {
+        res.status(401).send('Unauthorized');
+        return;
+    }
     const order= await getNewOrderForCurrentUser(req);
     if(order) res.send(order);
     else res.status(HTTP_BAD_REQUEST).send();
 }))
 
-router.post('/pay', asyncHandler( async (req:any, res) => {
+router.post('/pay', asyncHandler( async (req: AuthRequest, res) => {
+    if (!req.user) {
+        res.status(401).send('Unauthorized');
+        return;
+    }
     const {paymentId} = req.body;
     const order = await getNewOrderForCurrentUser(req);
     if(!order){
@@ -57,6 +70,9 @@ router.get('/track/:id', asyncHandler( async (req, res) => {
 
 export default router;
 
-async function getNewOrderForCurrentUser(req: any) {
+async function getNewOrderForCurrentUser(req: AuthRequest) {
+    if (!req.user) {
+        return null;
+    }
     return await OrderModel.findOne({ user: req.user.id, status: OrderStatus.NEW });
 }
