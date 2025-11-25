@@ -15,7 +15,7 @@ div a{
     margin: 0;
     border-radius: 6px;
     font-weight: 600;
-    color: #495057;
+    color: #282c3f;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
     transition: all 0.2s ease;
     border: 1px solid rgba(255, 255, 255, 0.8);
@@ -24,11 +24,11 @@ div a{
 }
 
 div a:hover{
-    background: #FF6B35;
+    background: #FC8019;
     color: white;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
-    border-color: #FF6B35;
+    box-shadow: 0 4px 12px rgba(252, 128, 25, 0.3);
+    border-color: #FC8019;
 }
 
 /* Responsive Design */

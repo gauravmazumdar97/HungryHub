@@ -8,7 +8,7 @@ input {
     font-size: 1rem;
     padding: 0.8rem 1.2rem;
     outline: none;
-    color: #212529;
+    color: #282c3f;
     font-weight: 400;
   }
 
@@ -18,8 +18,8 @@ input {
   }
   
   input:focus{
-    border-color: #FF6B35;
-    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+    border-color: #FC8019;
+    box-shadow: 0 0 0 3px rgba(252, 128, 25, 0.1);
     background: #ffffff;
   }
 

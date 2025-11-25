@@ -1,5 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 import { ThemeService } from 'src/app/services/theme.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dynamic-background',
@@ -10,22 +12,17 @@ export class DynamicBackgroundComponent implements OnInit, OnDestroy {
   @ViewChild('currentImg', { static: false }) currentImgElement!: ElementRef<HTMLDivElement>;
   @ViewChild('nextImg', { static: false }) nextImgElement!: ElementRef<HTMLDivElement>;
 
+  // Default background image
+  defaultImage: string = 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1920&q=80';
+  
+  // Cart page background image
+  cartPageImage: string = 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=1920&q=80';
+  
+  // Wishlist page background image
+  wishlistPageImage: string = 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=1920&q=80';
+
   foodImages: string[] = [
-    // High-quality food images from Unsplash
-    'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=1920&q=80',
-    'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=1920&q=80',
-    'https://images.unsplash.com/photo-1565958011703-14f0586457d5?w=1920&q=80',
-    'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=1920&q=80',
-    'https://images.unsplash.com/photo-1563379091339-03246963d96c?w=1920&q=80',
-    'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=1920&q=80',
-    'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=1920&q=80',
-    'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=1920&q=80',
-    'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1920&q=80',
-    'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=1920&q=80',
-    'https://images.unsplash.com/photo-1476718406336-bb5a9690ee2a?w=1920&q=80',
-    'https://images.unsplash.com/photo-1506084868230-bb9d95c24759?w=1920&q=80',
-    'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=1920&q=80',
-    'https://images.unsplash.com/photo-1529042410759-befb1204b468?w=1920&q=80',
+    // Background image from Unsplash
     'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1920&q=80'
   ];
 
@@ -36,23 +33,52 @@ export class DynamicBackgroundComponent implements OnInit, OnDestroy {
   private intervalId: any;
   private imageCache: Map<string, number> = new Map();
 
-  constructor(private themeService: ThemeService) {}
+  constructor(
+    private themeService: ThemeService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    // Shuffle images for variety on each page load
-    this.shuffleArray(this.foodImages);
+    // Set initial background based on current route
+    this.updateBackgroundForRoute();
     
-    // Initialize with first image
-    this.currentImage = this.foodImages[0];
-    this.nextImage = this.foodImages[1];
+    // Listen to route changes
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(() => {
+        this.updateBackgroundForRoute();
+      });
     
     // Analyze initial image brightness
     this.analyzeImageBrightness(this.currentImage);
     
-    // Change image every 6 seconds
-    this.intervalId = setInterval(() => {
-      this.changeImage();
-    }, 6000);
+    // Disable automatic image rotation for static background
+    // this.intervalId = setInterval(() => {
+    //   this.changeImage();
+    // }, 6000);
+  }
+
+  private updateBackgroundForRoute(): void {
+    const currentUrl = this.router.url;
+    
+    // Check if we're on the cart page
+    if (currentUrl.includes('/cart-page')) {
+      this.currentImage = this.cartPageImage;
+      this.nextImage = this.cartPageImage;
+    } 
+    // Check if we're on the wishlist page
+    else if (currentUrl.includes('/wishlist')) {
+      this.currentImage = this.wishlistPageImage;
+      this.nextImage = this.wishlistPageImage;
+    } 
+    else {
+      // Use default image for other pages
+      this.currentImage = this.defaultImage;
+      this.nextImage = this.defaultImage;
+    }
+    
+    // Analyze brightness of the new image
+    this.analyzeImageBrightness(this.currentImage);
   }
 
   ngOnDestroy(): void {

@@ -38,7 +38,7 @@
 }
 
 .stat-card.revenue {
-  background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+  background: linear-gradient(135deg, #FC8019 0%, #FF8C42 100%);
   color: white;
 }
 
@@ -49,7 +49,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 107, 53, 0.1);
+  background: rgba(252, 128, 25, 0.1);
   border-radius: 12px;
 }
 
@@ -139,7 +139,7 @@
 }
 
 .food-info .revenue {
-  color: #FF6B35;
+  color: #FC8019;
   font-weight: 700;
   font-size: 1rem;
 }

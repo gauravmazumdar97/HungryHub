@@ -1,7 +1,15 @@
 <div class="container">
     <div class="details">
-      <app-title title="Register"></app-title>
-      <form [formGroup]="registerForm" (ngSubmit)="submit()">
+      <div class="tabs">
+        <a routerLink="/login" class="tab">Sign In</a>
+        <a routerLink="/register" class="tab active">Create an Account</a>
+      </div>
+
+      <div class="content">
+        <h1 class="page-title">Create an Account</h1>
+        <p class="welcome-message">Join us today and start your food journey!</p>
+
+        <form [formGroup]="registerForm" (ngSubmit)="submit()">
         <text-input
         [control]="fc.name"
         [showErrorsWhen]="isSubmitted"
@@ -37,16 +45,15 @@
   `</text-input>
   
   
-  <default-button text="Register"></default-button>
-  
-  <div class="login">
-    Already a user? &nbsp;
-    <a routerLink="/login" [queryParams]="{returnUrl: returnUrl}">
-      Login Here
-    </a>
-  </div>
-  
-  
-      </form>
+          <button type="submit" class="primary-button">Create Account</button>
+
+          <div class="login">
+            Already a user? &nbsp;
+            <a routerLink="/login" [queryParams]="{returnUrl: returnUrl}">
+              Sign In Here
+            </a>
+          </div>
+        </form>
+      </div>
     </div>
   </div>

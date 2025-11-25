@@ -6,40 +6,304 @@
     margin-top: 0;
     padding: 2rem;
     animation: fadeIn 0.6s ease;
+    position: relative;
+    z-index: 1;
   }
   
   .details{
     width: 100%;
-    max-width: 28rem;
+    max-width: 32rem;
     background: #ffffff;
-    padding: 3rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    border: 1px solid #e9ecef;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), 0 8px 25px rgba(0, 0, 0, 0.1);
     animation: scaleIn 0.6s ease;
     position: relative;
+    z-index: 2;
+    color: #282c3f;
+    overflow: hidden;
   }
-  
-  .login{
+
+  .tabs {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 1.5rem;
-    gap: 0.5rem;
-    color: #6c757d;
-    font-weight: 500;
+    border-bottom: 1px solid #e5e5e5;
+    background: #f5f5f5;
   }
 
-  .login a {
-    color: #FF6B35;
-    font-weight: 600;
+  .tab {
+    flex: 1;
+    padding: 1.2rem 2rem;
+    text-align: center;
     text-decoration: none;
-    transition: all 0.2s ease;
+    color: #686b78;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    position: relative;
+    background: transparent;
+    border: none;
   }
 
-  .login a:hover {
-    color: #F7931E;
+  .tab.active {
+    color: #282c3f;
+    font-weight: 700;
+    background: #ffffff;
+  }
+
+  .tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: #FC8019;
+  }
+
+  .tab:not(.active):hover {
+    background: #fafafa;
+    color: #282c3f;
+  }
+
+  .content {
+    padding: 2.5rem 3rem;
+  }
+
+  .details::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, #FC8019 0%, #FF8C42 50%, #FC8019 100%);
+    z-index: 1;
+    box-shadow: 0 2px 8px rgba(252, 128, 25, 0.3);
+  }
+
+  .details::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(252, 128, 25, 0.05) 0%, transparent 70%);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .details > * {
+    position: relative;
+    z-index: 2;
+  }
+
+  .details * {
+    color: #282c3f !important;
+  }
+
+  .details label,
+  .details span,
+  .details div:not(.login) {
+    color: #282c3f !important;
+  }
+
+  .page-title {
+    color: #1a1a1a !important;
+    font-size: 2rem;
+    font-weight: 800;
+    margin: 0 0 0.5rem 0;
+    text-shadow: none;
+    background: none !important;
+    padding: 0;
+    border-radius: 0;
+    text-align: left;
+    display: block;
+    width: 100%;
+    box-shadow: none;
+    border: none;
+    position: relative;
+    z-index: 2;
+    letter-spacing: 0;
+  }
+
+  .welcome-message {
+    color: #686b78 !important;
+    font-size: 0.95rem;
+    font-weight: 400;
+    margin: 0 0 2rem 0;
+    line-height: 1.5;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 0;
+  }
+
+  .password-field {
+    position: relative;
+  }
+
+  .show-password {
+    position: absolute;
+    right: 1rem;
+    top: 2.5rem;
+    color: #FC8019;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .show-password:hover {
+    color: #FF8C42;
     text-decoration: underline;
+  }
+
+  .forgot-password {
+    color: #FC8019;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: underline;
+    margin-top: -0.5rem;
+    margin-bottom: 0.5rem;
+    align-self: flex-start;
+    transition: color 0.2s ease;
+  }
+
+  .forgot-password:hover {
+    color: #FF8C42;
+  }
+
+  .primary-button {
+    background: #FC8019;
+    color: #ffffff;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+    box-shadow: 0 2px 8px rgba(252, 128, 25, 0.3);
+  }
+
+  .primary-button:hover {
+    background: #FF8C42;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(252, 128, 25, 0.4);
+  }
+
+  .secondary-button {
+    background: #ffffff;
+    color: #FC8019;
+    border: 2px solid #FC8019;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 0.5rem;
+  }
+
+  .secondary-button:hover {
+    background: #fff8f5;
+    border-color: #FF8C42;
+    color: #FF8C42;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 2rem 0;
+    color: #686b78;
+    font-size: 0.9rem;
+  }
+
+  .divider::before,
+  .divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #e5e5e5;
+  }
+
+  .divider span {
+    padding: 0 1rem;
+  }
+
+  .social-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .social-button {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    border: none;
+    position: relative;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  }
+
+  .social-button.apple {
+    background: #000000;
+    color: #ffffff;
+  }
+
+  .social-button.apple i {
+    color: #ffffff !important;
+    font-size: 1.2rem;
+    width: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .social-button.apple span {
+    color: #ffffff !important;
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+
+  .social-button.apple:hover {
+    background: #1a1a1a;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  }
+
+  .social-button.google {
+    background: #ffffff;
+    color: #3c4043;
+    border: 1px solid #dadce0;
+  }
+
+  .social-button.google .google-logo {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+
+  .social-button.google span {
+    color: #3c4043 !important;
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+
+  .social-button.google:hover {
+    background: #f8f9fa;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   }
 
   /* Responsive Design */
@@ -49,13 +313,29 @@
     }
 
     .details {
-      padding: 2rem 1.5rem;
       max-width: 100%;
+    }
+
+    .content {
+      padding: 2rem 1.5rem;
+    }
+
+    .tab {
+      padding: 1rem 1.5rem;
+      font-size: 0.9rem;
     }
   }
 
   @media (max-width: 480px) {
-    .details {
+    .content {
       padding: 1.5rem 1rem;
+    }
+
+    .page-title {
+      font-size: 1.75rem;
+    }
+
+    .social-buttons {
+      flex-direction: column;
     }
   }

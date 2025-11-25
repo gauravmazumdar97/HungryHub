@@ -46,7 +46,7 @@ li a:hover{
     cursor: pointer;
     transform: translateY(-4px);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-    border-color: #FF6B35;
+    border-color: #FC8019;
 }
 
 li a img{
@@ -116,11 +116,11 @@ li a:hover img {
 }
 
 .favorite-btn.active i {
-    color: #FF6B35;
+    color: #FC8019;
 }
 
 .favorite-btn.active {
-    background: rgba(255, 107, 53, 0.1);
+    background: rgba(252, 128, 25, 0.1);
 }
 
 .product-item-footer{
@@ -151,9 +151,9 @@ li a:hover img {
 }
 
 .origins span:hover {
-    background: #FF6B35;
+    background: #FC8019;
     color: white;
-    border-color: #FF6B35;
+    border-color: #FC8019;
 }
 
 .cook-time{
@@ -176,19 +176,19 @@ li a:hover img {
     position: absolute;
     bottom: 1.2rem;
     left: 1.2rem;
-    background: #FF6B35;
+    background: #FC8019;
     color: white;
     padding: 0.5rem 1.2rem;
     border-radius: 6px;
     font-size: 1.2rem;
     font-weight: 700;
-    box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
+    box-shadow: 0 2px 8px rgba(252, 128, 25, 0.3);
     z-index: 3;
     transition: all 0.2s ease;
 }
 
 li a:hover .price {
-    background: #F7931E;
+    background: #FF8C42;
 }
 
 /* Responsive Design */

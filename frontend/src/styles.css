@@ -28,9 +28,14 @@ h1, h2, h3, h4, h5, h6, p, span, div, a, li, td, th {
 }
 
 :root {
-    --text-color: #1a1a1a;
-    --text-color-secondary: #4a4a4a;
+    --text-color: #282c3f;
+    --text-color-secondary: #686b78;
     --bg-overlay: rgba(255, 255, 255, 0.15);
+    --primary-orange: #FC8019;
+    --primary-orange-hover: #FF8C42;
+    --light-gray: #F5F5F5;
+    --border-color: #e5e5e5;
+    --card-bg: #ffffff;
 }
 
 body{
@@ -91,12 +96,12 @@ a{
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #FF6B35;
+    background: #FC8019;
     border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #F7931E;
+    background: #FF8C42;
 }
 
 /* Responsive Design */

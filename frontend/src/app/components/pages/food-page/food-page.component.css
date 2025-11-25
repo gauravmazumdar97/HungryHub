@@ -83,12 +83,12 @@ img:hover {
 }
 
 .favorite-btn.active {
-    background: rgba(255, 107, 53, 0.1);
-    color: #FF6B35;
+    background: rgba(252, 128, 25, 0.1);
+    color: #FC8019;
 }
 
 .favorite-btn.active i {
-    color: #FF6B35;
+    color: #FC8019;
 }
 
 .name{
@@ -118,9 +118,9 @@ img:hover {
 }
 
 .origins span:hover {
-    background: #FF6B35;
+    background: #FC8019;
     color: white;
-    border-color: #FF6B35;
+    border-color: #FC8019;
 }
 
 .tags{
@@ -143,11 +143,11 @@ img:hover {
 }
 
 .tags a:hover{
-    background: #FF6B35;
+    background: #FC8019;
     color: white;
-    border-color: #FF6B35;
+    border-color: #FC8019;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+    box-shadow: 0 4px 12px rgba(252, 128, 25, 0.3);
 }
 
 .cook-time{
@@ -177,7 +177,7 @@ img:hover {
 .price{
     font-size: 2.5rem;
     margin: 1rem 0;
-    color: #FF6B35;
+    color: #FC8019;
     font-weight: 800;
 }
 
@@ -190,7 +190,7 @@ img:hover {
 
 button{
     color: white;
-    background: #FF6B35;
+    background: #FC8019;
     border: none;
     font-size: 1.1rem;
     padding: 1.2rem 2.5rem;
@@ -199,7 +199,7 @@ button{
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
-    box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
+    box-shadow: 0 2px 8px rgba(252, 128, 25, 0.3);
     letter-spacing: 0.5px;
     margin-top: 1rem;
     width: 100%;
@@ -207,9 +207,9 @@ button{
 }
 
 button:hover{
-    background: #F7931E;
+    background: #FF8C42;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 107, 53, 0.4);
+    box-shadow: 0 4px 12px rgba(252, 128, 25, 0.4);
 }
 
 button:active {

@@ -27,7 +27,7 @@
     width: 150px;
     height: 150px;
     animation: spin 2s linear infinite;
-    filter: drop-shadow(0 0 20px rgba(255, 107, 53, 0.3));
+    filter: drop-shadow(0 0 20px rgba(252, 128, 25, 0.3));
   }
 
   @keyframes spin {
@@ -41,7 +41,7 @@
     font-weight: 700;
     font-size: 1.8rem;
     letter-spacing: 2px;
-    color: #FF6B35;
+    color: #FC8019;
     animation: pulse 2s ease-in-out infinite;
   }
 

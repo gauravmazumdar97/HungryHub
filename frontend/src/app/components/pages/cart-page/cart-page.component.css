@@ -51,7 +51,7 @@ ul li:nth-child(n+6) { animation-delay: 0.6s; }
 ul li:hover {
     transform: translateX(2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    border-color: #FF6B35;
+    border-color: #FC8019;
 }
 
 ul li:last-child{
@@ -88,7 +88,7 @@ li div a {
 }
 
 li div a:hover {
-    color: #FF6B35;
+    color: #FC8019;
 }
 
 li select{
@@ -105,8 +105,8 @@ li select{
 }
 
 li select:focus {
-    border-color: #FF6B35;
-    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+    border-color: #FC8019;
+    box-shadow: 0 0 0 3px rgba(252, 128, 25, 0.1);
 }
 
 li .remove-button{
@@ -180,7 +180,7 @@ li .remove-button:hover{
 }
 
 .total-price {
-    color: #FF6B35;
+    color: #FC8019;
     font-weight: 700;
     font-size: 2rem;
 }
@@ -188,7 +188,7 @@ li .remove-button:hover{
 .checkout a{
     padding: 1.2rem 2rem;
     color: white;
-    background: #FF6B35;
+    background: #FC8019;
     display: block;
     width: 100%;
     border-radius: 8px;
@@ -197,15 +197,15 @@ li .remove-button:hover{
     font-size: 1rem;
     justify-content: center;
     transition: all 0.2s ease;
-    box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
+    box-shadow: 0 2px 8px rgba(252, 128, 25, 0.3);
     letter-spacing: 0.5px;
     text-decoration: none;
 }
 
 .checkout a:hover{
-    background: #F7931E;
+    background: #FF8C42;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 107, 53, 0.4);
+    box-shadow: 0 4px 12px rgba(252, 128, 25, 0.4);
     cursor: pointer;
 }
 

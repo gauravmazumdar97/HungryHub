@@ -52,7 +52,7 @@ li:nth-child(n+6) { animation-delay: 0.6s; }
 li:hover {
   transform: translateX(5px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-  border-color: #FF6B35;
+  border-color: #FC8019;
 }
 
 li img {
@@ -85,7 +85,7 @@ li:hover img {
 }
 
 .name:hover {
-  color: #FF6B35;
+  color: #FC8019;
 }
 
 .details {
@@ -123,7 +123,7 @@ li:hover img {
 .price {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #FF6B35;
+  color: #FC8019;
 }
 
 .actions {

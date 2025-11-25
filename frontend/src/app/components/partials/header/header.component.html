@@ -1,8 +1,13 @@
 <header>
     <div class="container">
-        <a routerLink="/" class="logo">
-            <span class="logo-text">Hungry<span class="logo-hub">Hub</span></span>
-        </a>
+        <div class="left-section">
+            <button *ngIf="!isHomePage" class="back-button" (click)="goBack()" title="Go Back">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <a routerLink="/" class="logo">
+                <span class="logo-text">Hungry<span class="logo-hub">Hub</span></span>
+            </a>
+        </div>
         <nav>
             <ul>
               
@@ -20,16 +25,19 @@
                     </a>
                 </li>
 
+                <li *ngIf="isAuth">
+                    <a routerLink="/dashboard">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+
                 <li *ngIf="isAuth" class="menu-container">
                     <a routerLink="/dashboard">
                         <i class="fas fa-user-circle"></i>
                         <span>{{user.name}}</span>
                     </a>
                     <div class="menu">
-                        <a routerLink="/dashboard">
-                            <i class="fas fa-chart-line"></i>
-                            <span>Dashboard</span>
-                        </a>
                         <a routerLink="/orders">
                             <i class="fas fa-receipt"></i>
                             <span>Orders</span>

@@ -37,7 +37,7 @@ table{
   }
 
   a:hover{
-    color: #FF6B35;
+    color: #FC8019;
   }
   
   td{
@@ -58,7 +58,7 @@ table{
   tr:last-child td:last-child {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #FF6B35;
+    color: #FC8019;
   }
   
   td img{
@@ -82,5 +82,5 @@ table{
   }
 
   td a:hover {
-    color: #FF6B35;
+    color: #FC8019;
   }
