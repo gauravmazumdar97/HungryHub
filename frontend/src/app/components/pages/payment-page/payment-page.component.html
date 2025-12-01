@@ -1,0 +1,117 @@
+<div class="container">
+  <div class="payment-container">
+    <app-title title="Payment" fontSize="1.8rem"></app-title>
+    
+    <div class="order-summary" *ngIf="order && order.items">
+      <h3>Order Summary</h3>
+      <div class="summary-item">
+        <span>Total Items:</span>
+        <span>{{ order.items.length }}</span>
+      </div>
+      <div class="summary-item total">
+        <span>Total Amount:</span>
+        <span>{{ order.totalPrice | currency }}</span>
+      </div>
+    </div>
+
+    <form [formGroup]="paymentForm" (ngSubmit)="submitPayment()" class="payment-form">
+      <div class="form-group">
+        <label for="cardNumber">Card Number</label>
+        <input
+          type="text"
+          id="cardNumber"
+          formControlName="cardNumber"
+          placeholder="1234 5678 9012 3456"
+          maxlength="19"
+          (input)="formatCardNumber($event)"
+          [class.invalid]="fc.cardNumber.invalid && fc.cardNumber.touched"
+        />
+        <span class="error" *ngIf="fc.cardNumber.invalid && fc.cardNumber.touched">
+          Please enter a valid 16-digit card number
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label for="cardHolder">Card Holder Name</label>
+        <input
+          type="text"
+          id="cardHolder"
+          formControlName="cardHolder"
+          placeholder="John Doe"
+          [class.invalid]="fc.cardHolder.invalid && fc.cardHolder.touched"
+        />
+        <span class="error" *ngIf="fc.cardHolder.invalid && fc.cardHolder.touched">
+          Please enter card holder name
+        </span>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="expiryMonth">Expiry Month</label>
+          <input
+            type="text"
+            id="expiryMonth"
+            formControlName="expiryMonth"
+            placeholder="MM"
+            maxlength="2"
+            (input)="formatExpiry($event, 'expiryMonth')"
+            [class.invalid]="fc.expiryMonth.invalid && fc.expiryMonth.touched"
+          />
+          <span class="error" *ngIf="fc.expiryMonth.invalid && fc.expiryMonth.touched">
+            MM
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="expiryYear">Expiry Year</label>
+          <input
+            type="text"
+            id="expiryYear"
+            formControlName="expiryYear"
+            placeholder="YY"
+            maxlength="2"
+            (input)="formatExpiry($event, 'expiryYear')"
+            [class.invalid]="fc.expiryYear.invalid && fc.expiryYear.touched"
+          />
+          <span class="error" *ngIf="fc.expiryYear.invalid && fc.expiryYear.touched">
+            YY
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="cvv">CVV</label>
+          <input
+            type="text"
+            id="cvv"
+            formControlName="cvv"
+            placeholder="123"
+            maxlength="4"
+            (input)="formatCVV($event)"
+            [class.invalid]="fc.cvv.invalid && fc.cvv.touched"
+          />
+          <span class="error" *ngIf="fc.cvv.invalid && fc.cvv.touched">
+            Invalid CVV
+          </span>
+        </div>
+      </div>
+
+      <div class="payment-info">
+        <p><i class="fas fa-lock"></i> Your payment information is secure and encrypted</p>
+        <p class="test-info"><i class="fas fa-info-circle"></i> Use any card number for testing (e.g., 4111111111111111)</p>
+      </div>
+
+      <button type="submit" [disabled]="isProcessing || paymentForm.invalid" class="pay-button">
+        <span *ngIf="!isProcessing">
+          <i class="fas fa-credit-card"></i> Pay {{ order.totalPrice | currency }}
+        </span>
+        <span *ngIf="isProcessing">
+          <i class="fas fa-spinner fa-spin"></i> Processing Payment...
+        </span>
+      </button>
+
+      <button type="button" (click)="router.navigateByUrl('/checkout')" class="back-button">
+        <i class="fas fa-arrow-left"></i> Back to Checkout
+      </button>
+    </form>
+  </div>
+</div>

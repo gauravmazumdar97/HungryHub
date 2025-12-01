@@ -6,11 +6,11 @@ import { FoodModel } from '../models/food.model';
 import auth, { AuthRequest } from '../middlewares/auth.mid';
 
 const router = Router();
-router.use(auth);
+router.use(auth as any);
 
 // Get all wishlist items for current user
 router.get('/my-wishlist', asyncHandler(
-  async (req: AuthRequest, res) => {
+  async (req: any, res) => {
     if (!req.user) {
       res.status(401).send('Unauthorized');
       return;
@@ -24,7 +24,7 @@ router.get('/my-wishlist', asyncHandler(
 
 // Add food to wishlist
 router.post('/add/:foodId', asyncHandler(
-  async (req: AuthRequest, res) => {
+  async (req: any, res) => {
     if (!req.user) {
       res.status(401).send('Unauthorized');
       return;
@@ -63,7 +63,7 @@ router.post('/add/:foodId', asyncHandler(
 
 // Remove food from wishlist
 router.delete('/remove/:foodId', asyncHandler(
-  async (req: AuthRequest, res) => {
+  async (req: any, res) => {
     if (!req.user) {
       res.status(401).send('Unauthorized');
       return;
@@ -87,7 +87,7 @@ router.delete('/remove/:foodId', asyncHandler(
 
 // Check if food is in wishlist
 router.get('/check/:foodId', asyncHandler(
-  async (req: AuthRequest, res) => {
+  async (req: any, res) => {
     if (!req.user) {
       res.status(401).send('Unauthorized');
       return;

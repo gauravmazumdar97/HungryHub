@@ -22,29 +22,15 @@ export class ThemeService {
   public theme$: Observable<ThemeColors> = this.themeSubject.asObservable();
 
   constructor() {
-    // Set CSS variables on document root
-    this.theme$.subscribe(theme => {
-      document.documentElement.style.setProperty('--text-color', theme.textColor);
-      document.documentElement.style.setProperty('--text-color-secondary', theme.textColorSecondary);
-      document.documentElement.style.setProperty('--bg-overlay', theme.backgroundColor);
-    });
+    // Set fixed CSS variables on document root (no dynamic changes)
+    document.documentElement.style.setProperty('--text-color', '#282c3f');
+    document.documentElement.style.setProperty('--text-color-secondary', '#686b78');
+    document.documentElement.style.setProperty('--bg-overlay', 'rgba(255, 255, 255, 0.15)');
   }
 
   updateTheme(brightness: number): void {
-    // Brightness is 0-255, where 0 is darkest and 255 is lightest
-    // Threshold: if brightness > 128, it's a light image, use dark text
-    const isLight = brightness > 128;
-    
-    const theme: ThemeColors = {
-      textColor: isLight ? '#1a1a1a' : '#ffffff',
-      textColorSecondary: isLight ? '#4a4a4a' : '#e0e0e0',
-      backgroundColor: isLight 
-        ? 'rgba(255, 255, 255, 0.15)' 
-        : 'rgba(0, 0, 0, 0.3)',
-      isLight: isLight
-    };
-
-    this.themeSubject.next(theme);
+    // Disabled - no longer dynamically changing theme based on image brightness
+    // Keeping method for backward compatibility but it does nothing
   }
 
   getCurrentTheme(): ThemeColors {

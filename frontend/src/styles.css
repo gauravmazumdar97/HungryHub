@@ -40,12 +40,11 @@ h1, h2, h3, h4, h5, h6, p, span, div, a, li, td, th {
 
 body{
     margin: 0;
-    background: transparent;
+    background: #f8f9fa;
     min-height: 100vh;
     position: relative;
     overflow-x: hidden;
     color: var(--text-color);
-    transition: color 0.5s ease;
 }
 
 @keyframes fadeIn {

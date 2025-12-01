@@ -10,6 +10,12 @@ export const USER_LOGIN_URL = BASE_URL + '/api/users/login';
 export const USER_REGISTER_URL = BASE_URL + '/api/users/register';
 
 export const ORDER_URL = BASE_URL + '/api/orders';
+export const ORDER_CREATE_URL = ORDER_URL + '/create';
+export const ORDER_NEW_FOR_CURRENT_USER_URL = ORDER_URL + '/newOrderForCurrentUser';
+export const ORDER_PAY_URL = ORDER_URL + '/pay';
+export const ORDER_TRACK_URL = ORDER_URL + '/track/';
+export const ORDER_RAZORPAY_CREATE_URL = ORDER_URL + '/create-razorpay-order';
+export const ORDER_RAZORPAY_VERIFY_URL = ORDER_URL + '/verify-razorpay-payment';
 
 export const WISHLIST_URL = BASE_URL + '/api/wishlist';
 export const WISHLIST_MY_URL = WISHLIST_URL + '/my-wishlist';

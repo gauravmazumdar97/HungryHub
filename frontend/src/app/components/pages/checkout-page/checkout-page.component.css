@@ -5,56 +5,223 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 2rem;
-    background: #ffffff;
-    border-radius: 12px;
+    background: transparent;
     padding: 3rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    border: 1px solid #e9ecef;
     animation: fadeIn 0.6s ease;
+    position: relative;
+    z-index: 1;
+    min-height: calc(100vh - 200px);
   }
   
   .content{
     width: 100%;
     max-width: 35rem;
-    background: #f8f9fa;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
     padding: 2.5rem;
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
     animation: slideIn 0.6s ease;
-    border: 1px solid #e9ecef;
+    border: 1px solid rgba(255, 255, 255, 0.3);
   }
 
-  .map{
-    width: 100%;
-    max-width: 35rem;
-    background: #f8f9fa;
-    padding: 2.5rem;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    margin: 0;
-    animation: slideIn 0.8s ease;
-    min-height: 20rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: #6c757d;
-    text-align: center;
-    border: 1px solid #e9ecef;
-  }
-
-  .map app-title {
-    width: 100%;
-  }
   
-  .content, form{
+.content, form{
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
   }
   
-  form{
+form{
     width: 100%;
+  }
+
+  .address-section {
+    margin-top: 1.5rem;
+    padding: 1.5rem 1.75rem;
+    border-radius: 12px;
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+  }
+
+  .section-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .section-title {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #282c3f;
+  }
+
+  .section-subtitle {
+    margin: 0.25rem 0 0;
+    font-size: 0.9rem;
+    color: #686b78;
+  }
+
+  .address-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-top: 1rem;
+  }
+
+  .address-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1rem;
+  }
+
+  .address-field {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .address-field label {
+    color: #282c3f;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .address-input {
+    width: 100%;
+    padding: 0.8rem 1.2rem 0.8rem 2.5rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #282c3f;
+    background: #ffffff;
+    transition: all 0.2s ease;
+    outline: none;
+    font-family: "Poppins", sans-serif;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+
+  .address-input.ng-invalid.ng-touched {
+    border-color: #dc3545;
+  }
+
+  .address-input.ng-valid.ng-touched {
+    border-color: #28a745;
+  }
+
+  .address-input:focus {
+    border-color: #FC8019;
+    box-shadow: 0 0 0 3px rgba(252, 128, 25, 0.1);
+  }
+
+  .address-input::placeholder {
+    color: #adb5bd;
+    font-size: 0.95rem;
+  }
+
+  .address-icon {
+    position: absolute;
+    left: 0.9rem;
+    top: 2.4rem;
+    color: #FC8019;
+    font-size: 1rem;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .pincode-field {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .pincode-field label {
+    color: #282c3f;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .pincode-input {
+    width: 100%;
+    padding: 0.8rem 1.2rem 0.8rem 2.5rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #282c3f;
+    background: #ffffff;
+    transition: all 0.2s ease;
+    outline: none;
+    font-family: "Poppins", sans-serif;
+    box-sizing: border-box;
+  }
+
+  .pincode-input:focus {
+    border-color: #FC8019;
+    box-shadow: 0 0 0 3px rgba(252, 128, 25, 0.1);
+  }
+
+  .pincode-input::placeholder {
+    color: #adb5bd;
+    font-size: 0.95rem;
+  }
+
+  .pincode-input.ng-invalid.ng-touched {
+    border-color: #dc3545;
+  }
+
+  .pincode-input.ng-valid.ng-touched {
+    border-color: #28a745;
+  }
+
+  .pincode-icon {
+    position: absolute;
+    left: 0.9rem;
+    top: 2.4rem;
+    color: #FC8019;
+    font-size: 1rem;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Google Autocomplete dropdown styling */
+  .pac-container {
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    border: 1px solid #e9ecef;
+    margin-top: 0.25rem;
+    font-family: "Poppins", sans-serif;
+  }
+
+  .pac-item {
+    padding: 0.75rem 1rem;
+    border-top: 1px solid #f0f0f0;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .pac-item:first-child {
+    border-top: none;
+  }
+
+  .pac-item:hover {
+    background-color: #fff8f5;
+  }
+
+  .pac-item-selected {
+    background-color: #fff8f5;
+  }
+
+  .pac-icon {
+    margin-right: 0.5rem;
+  }
+
+  .pac-matched {
+    font-weight: 600;
+    color: #FC8019;
   }
   
   .buttons-container{
@@ -102,8 +269,16 @@
       padding: 2rem 1.5rem;
     }
 
-    .content, .map {
+    .content {
       max-width: 100%;
       padding: 2rem 1.5rem;
+    }
+
+    .address-section {
+      padding: 1.25rem 1.25rem;
+    }
+
+    .address-row {
+      grid-template-columns: 1fr;
     }
   }

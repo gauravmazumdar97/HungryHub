@@ -1,17 +1,51 @@
 <div class="container">
     <div class="content">
       <app-title title="Order Form" fontSize="1.6rem"></app-title>
-      <form [formGroup]="checkoutForm">
-        <text-input [control]="fc.name" label="Name"></text-input>
-        <text-input [control]="fc.address" label="Address"></text-input>
-      </form>
+
+      <div class="address-section">
+        <div class="section-header">
+          <h2 class="section-title">Delivery Details</h2>
+          <p class="section-subtitle">
+            We’ll deliver your order to this address. Please include house number, street and pincode.
+          </p>
+        </div>
+
+        <form [formGroup]="checkoutForm" class="address-form">
+          <text-input [control]="fc.name" label="Full Name"></text-input>
+
+          <div class="address-row">
+            <div class="address-field">
+              <label for="address">Address</label>
+              <input
+                id="address"
+                type="text"
+                formControlName="address"
+                placeholder="Flat / House No., Street, Area"
+                class="address-input"
+                #addressInput
+                autocomplete="street-address"
+              />
+              <i class="fas fa-map-marker-alt address-icon"></i>
+            </div>
+
+            <div class="pincode-field">
+              <label for="pincode">Pincode</label>
+              <input
+                id="pincode"
+                type="text"
+                formControlName="pincode"
+                placeholder="e.g. 560001"
+                class="pincode-input"
+                maxlength="10"
+                autocomplete="postal-code"
+              />
+              <i class="fas fa-hashtag pincode-icon"></i>
+            </div>
+          </div>
+        </form>
+      </div>
+
       <order-items-list [order]="order"></order-items-list>
-    </div>
-    <div class="map">
-      <app-title
-      title="Choose Your Address On Map"
-      fontSize="1.6rem"></app-title>
-      <!-- Map component removed - not available in this version -->
     </div>
     <div class="buttons-container">
       <div class="buttons">

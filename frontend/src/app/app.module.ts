@@ -30,6 +30,8 @@ import { OrderItemsListComponent } from './components/partials/order-items-list/
 import { DynamicBackgroundComponent } from './components/partials/dynamic-background/dynamic-background.component';
 import { WishlistPageComponent } from './components/pages/wishlist-page/wishlist-page.component';
 import { DashboardPageComponent } from './components/pages/dashboard-page/dashboard-page.component';
+import { PaymentPageComponent } from './components/pages/payment-page/payment-page.component';
+import { OrdersPageComponent } from './components/pages/orders-page/orders-page.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +56,8 @@ import { DashboardPageComponent } from './components/pages/dashboard-page/dashbo
     DynamicBackgroundComponent,
     WishlistPageComponent,
     DashboardPageComponent,
+    PaymentPageComponent,
+    OrdersPageComponent,
   ],
   imports: [
     BrowserModule,

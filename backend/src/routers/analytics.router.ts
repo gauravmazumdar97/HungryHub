@@ -8,11 +8,11 @@ import auth, { AuthRequest } from '../middlewares/auth.mid';
 import { OrderStatus } from '../constants/order_status';
 
 const router = Router();
-router.use(auth);
+router.use(auth as any);
 
 // Get dashboard analytics
 router.get('/dashboard', asyncHandler(
-  async (req: AuthRequest, res) => {
+  async (req: any, res) => {
     if (!req.user) {
       res.status(401).send('Unauthorized');
       return;
