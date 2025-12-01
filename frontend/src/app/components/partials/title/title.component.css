@@ -37,7 +37,7 @@ h1 {
   position: relative;
   z-index: 1;
   display: inline-block;
-  background: linear-gradient(135deg, #282c3f 0%, #4a4f63 100%);
+  background: #FF8C42;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

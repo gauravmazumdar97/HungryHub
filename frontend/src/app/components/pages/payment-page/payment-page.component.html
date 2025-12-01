@@ -4,6 +4,19 @@
     
     <div class="order-summary" *ngIf="order && order.items">
       <h3>Order Summary</h3>
+      
+      <div class="items-list">
+        <div class="item-row" *ngFor="let item of order.items">
+          <div class="item-info">
+            <span class="item-name">{{ item.food.name }}</span>
+            <span class="item-quantity">x{{ item.quantity }}</span>
+          </div>
+          <span class="item-price">{{ item.price | currency }}</span>
+        </div>
+      </div>
+      
+      <div class="summary-divider"></div>
+      
       <div class="summary-item">
         <span>Total Items:</span>
         <span>{{ order.items.length }}</span>
