@@ -1,46 +1,184 @@
 <div class="container">
     <div class="content">
-      <app-title title="Order Form" fontSize="1.6rem"></app-title>
+      <app-title title="Enter a new delivery address" fontSize="1.6rem"></app-title>
 
       <div class="address-section">
-        <div class="section-header">
-          <h2 class="section-title">Delivery Details</h2>
-          <p class="section-subtitle">
-            We’ll deliver your order to this address. Please include house number, street and pincode.
-          </p>
+        <!-- Autofill Banner -->
+        <div class="autofill-banner">
+          <span class="autofill-text">Save time. Autofill your current location.</span>
+          <button type="button" class="autofill-button" (click)="autofillLocation()">
+            Autofill
+          </button>
         </div>
 
         <form [formGroup]="checkoutForm" class="address-form">
-          <text-input [control]="fc.name" label="Full Name"></text-input>
+          <!-- Country/Region -->
+          <div class="form-field">
+            <label for="country">Country/Region</label>
+            <select
+              id="country"
+              formControlName="country"
+              class="form-input select-input"
+            >
+              <option value="United Kingdom">United Kingdom</option>
+              <option value="United States">United States</option>
+              <option value="India">India</option>
+              <option value="Canada">Canada</option>
+              <option value="Australia">Australia</option>
+            </select>
+            <i class="fas fa-chevron-down select-icon"></i>
+            <span class="validation-error" *ngIf="fc.country.invalid && fc.country.touched">
+              Country is required
+            </span>
+          </div>
 
-          <div class="address-row">
-            <div class="address-field">
-              <label for="address">Address</label>
+          <!-- Full Name -->
+          <div class="form-field">
+            <label for="name">Full name (first name and surname)</label>
+            <input
+              id="name"
+              type="text"
+              formControlName="name"
+              placeholder="Enter your full name"
+              class="form-input"
+              autocomplete="name"
+            />
+            <span class="validation-error" *ngIf="fc.name.invalid && fc.name.touched">
+              Full name is required
+            </span>
+          </div>
+
+          <!-- Phone Number -->
+          <div class="form-field">
+            <label for="phone">Phone number</label>
+            <input
+              id="phone"
+              type="tel"
+              formControlName="phone"
+              placeholder="Enter your phone number"
+              class="form-input"
+              autocomplete="tel"
+            />
+            <span class="validation-error" *ngIf="fc.phone.invalid && fc.phone.touched">
+              Valid phone number is required
+            </span>
+            <p class="field-hint">May be used to assist delivery</p>
+          </div>
+
+          <!-- Postcode -->
+          <div class="form-field">
+            <label for="postcode">Postcode</label>
+            <input
+              id="postcode"
+              type="text"
+              formControlName="postcode"
+              placeholder="Enter your area postcode"
+              class="form-input"
+              autocomplete="postal-code"
+              maxlength="10"
+            />
+            <span class="validation-error" *ngIf="fc.postcode.invalid && fc.postcode.touched">
+              Valid postcode is required (4-10 characters)
+            </span>
+          </div>
+
+          <!-- Address Line 1 -->
+          <div class="form-field">
+            <label for="addressLine1">Address Line 1 (or Company Name)</label>
+            <div class="input-with-icon">
               <input
-                id="address"
+                id="addressLine1"
                 type="text"
-                formControlName="address"
-                placeholder="Flat / House No., Street, Area"
-                class="address-input"
-                #addressInput
+                formControlName="addressLine1"
+                placeholder="Start typing your address to get suggestions"
+                class="form-input"
+                #addressLine1Input
                 autocomplete="street-address"
               />
-              <i class="fas fa-map-marker-alt address-icon"></i>
+              <i class="fas fa-map-marker-alt input-icon"></i>
             </div>
+            <span class="validation-error" *ngIf="fc.addressLine1.invalid && fc.addressLine1.touched">
+              Address is required
+            </span>
+          </div>
 
-            <div class="pincode-field">
-              <label for="pincode">Pincode</label>
-              <input
-                id="pincode"
-                type="text"
-                formControlName="pincode"
-                placeholder="e.g. 560001"
-                class="pincode-input"
-                maxlength="10"
-                autocomplete="postal-code"
-              />
-              <i class="fas fa-hashtag pincode-icon"></i>
+          <!-- Address Line 2 (Optional) -->
+          <div class="form-field">
+            <label for="addressLine2">Address line 2 (optional)</label>
+            <input
+              id="addressLine2"
+              type="text"
+              formControlName="addressLine2"
+              placeholder="Apartment, suite, unit, building, floor, etc."
+              class="form-input"
+              autocomplete="address-line2"
+            />
+          </div>
+
+          <!-- Town/City -->
+          <div class="form-field">
+            <label for="townCity">Town/City</label>
+            <input
+              id="townCity"
+              type="text"
+              formControlName="townCity"
+              placeholder="Enter your town or city"
+              class="form-input"
+              autocomplete="address-level2"
+            />
+            <span class="validation-error" *ngIf="fc.townCity.invalid && fc.townCity.touched">
+              Town/City is required
+            </span>
+          </div>
+
+          <!-- County (Optional) -->
+          <div class="form-field">
+            <label for="county">County (if applicable)</label>
+            <input
+              id="county"
+              type="text"
+              formControlName="county"
+              placeholder="Enter your county"
+              class="form-input"
+              autocomplete="address-level1"
+            />
+          </div>
+
+          <!-- Make Default Checkbox -->
+          <div class="checkbox-field">
+            <input
+              type="checkbox"
+              id="makeDefault"
+              formControlName="makeDefault"
+              class="checkbox-input"
+            />
+            <label for="makeDefault" class="checkbox-label">Make this my default address</label>
+          </div>
+
+          <!-- Delivery Instructions -->
+          <div class="delivery-instructions">
+            <label for="deliveryInstructions" class="instructions-label">
+              Delivery instructions
+              <i class="fas fa-chevron-down"></i>
+            </label>
+            <div class="instructions-content" *ngIf="showDeliveryInstructions">
+              <textarea
+                id="deliveryInstructions"
+                formControlName="deliveryInstructions"
+                placeholder="Add preferences, notes, access codes and more"
+                class="form-textarea"
+                rows="3"
+              ></textarea>
             </div>
+            <button
+              type="button"
+              class="instructions-toggle"
+              (click)="toggleDeliveryInstructions()"
+              *ngIf="!showDeliveryInstructions"
+            >
+              Add preferences, notes, access codes and more
+              <i class="fas fa-chevron-down"></i>
+            </button>
           </div>
         </form>
       </div>

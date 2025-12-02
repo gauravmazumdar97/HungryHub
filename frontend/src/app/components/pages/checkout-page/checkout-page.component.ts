@@ -15,11 +15,12 @@ declare var google: any;
   styleUrls: ['./checkout-page.component.css']
 })
 export class CheckoutPageComponent implements OnInit, AfterViewInit {
-  @ViewChild('addressInput', { static: true }) addressInput!: ElementRef;
+  @ViewChild('addressLine1Input', { static: true }) addressLine1Input!: ElementRef;
   order:Order = new Order();
   checkoutForm!: FormGroup;
   autocomplete: any;
   private autocompleteInitialized = false;
+  showDeliveryInstructions = false;
   
   constructor(cartService:CartService,
               private formBuilder: FormBuilder,
@@ -35,9 +36,16 @@ export class CheckoutPageComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     let {name, address} = this.userService.currentUser;
     this.checkoutForm = this.formBuilder.group({
+      country:['United Kingdom', Validators.required],
       name:[name, Validators.required],
-      address:[address || '', Validators.required],
-      pincode:['', [Validators.required, Validators.pattern(/^[0-9]{4,10}$/)]]
+      phone:['', [Validators.required, Validators.pattern(/^[\+]?[0-9]{10,15}$/)]],
+      postcode:['', [Validators.required, Validators.pattern(/^[0-9A-Za-z\s-]{4,10}$/)]],
+      addressLine1:['', Validators.required],
+      addressLine2:[''],
+      townCity:['', Validators.required],
+      county:[''],
+      makeDefault:[false],
+      deliveryInstructions:['']
     });
   }
 
@@ -53,7 +61,7 @@ export class CheckoutPageComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    const input = this.addressInput?.nativeElement;
+    const input = this.addressLine1Input?.nativeElement;
     if (!input) {
       return;
     }
@@ -71,8 +79,44 @@ export class CheckoutPageComponent implements OnInit, AfterViewInit {
         this.autocomplete.addListener('place_changed', () => {
           const place = this.autocomplete.getPlace();
           if (place && place.formatted_address) {
+            // Extract address components
+            let addressLine1 = place.formatted_address;
+            let townCity = '';
+            let county = '';
+            let postcode = '';
+
+            // Parse address components
+            if (place.address_components) {
+              place.address_components.forEach((component: any) => {
+                const types = component.types;
+                if (types.includes('postal_code')) {
+                  postcode = component.long_name;
+                }
+                if (types.includes('locality') || types.includes('postal_town')) {
+                  townCity = component.long_name;
+                }
+                if (types.includes('administrative_area_level_1') || types.includes('administrative_area_level_2')) {
+                  if (!county) county = component.long_name;
+                }
+              });
+            }
+
+            // Split formatted address into line 1 and line 2 if needed
+            const addressParts = place.formatted_address.split(',');
+            if (addressParts.length > 1) {
+              addressLine1 = addressParts[0].trim();
+              if (addressParts.length > 2) {
+                this.checkoutForm.patchValue({
+                  addressLine2: addressParts.slice(1, -2).join(', ').trim()
+                });
+              }
+            }
+
             this.checkoutForm.patchValue({
-              address: place.formatted_address
+              addressLine1: addressLine1,
+              townCity: townCity || addressParts[addressParts.length - 2]?.trim() || '',
+              county: county || addressParts[addressParts.length - 1]?.trim() || '',
+              postcode: postcode || ''
             });
             
             // Store coordinates if available
@@ -99,9 +143,30 @@ export class CheckoutPageComponent implements OnInit, AfterViewInit {
     return this.checkoutForm.controls;
   }
 
+  toggleDeliveryInstructions(): void {
+    this.showDeliveryInstructions = !this.showDeliveryInstructions;
+  }
+
+  autofillLocation(): void {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          // Reverse geocoding would be needed here
+          // For now, just show a message
+          this.toastrService.info('Location detected. Please select your address from the suggestions.', 'Location');
+        },
+        (error) => {
+          this.toastrService.warning('Unable to detect location. Please enter your address manually.', 'Location');
+        }
+      );
+    } else {
+      this.toastrService.warning('Geolocation is not supported by your browser.', 'Location');
+    }
+  }
+
   createOrder(){
     if(this.checkoutForm.invalid){
-      this.toastrService.warning('Please fill the inputs', 'Invalid Inputs');
+      this.toastrService.warning('Please fill all required fields', 'Invalid Inputs');
       return;
     }
 
@@ -112,8 +177,17 @@ export class CheckoutPageComponent implements OnInit, AfterViewInit {
     // }
 
     this.order.name = this.fc.name.value;
-    const pincode = this.fc.pincode.value ? `, ${this.fc.pincode.value}` : '';
-    this.order.address = this.fc.address.value + pincode;
+    
+    // Build full address from all components
+    const addressParts = [
+      this.fc.addressLine1.value,
+      this.fc.addressLine2.value,
+      this.fc.townCity.value,
+      this.fc.county.value,
+      this.fc.postcode.value
+    ].filter(part => part && part.trim() !== '');
+    
+    this.order.address = addressParts.join(', ');
 
     this.orderService.create(this.order).subscribe({
       next:() => {

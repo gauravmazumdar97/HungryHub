@@ -28,7 +28,7 @@ export class PaymentPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.paymentForm = this.formBuilder.group({
-      cardNumber: ['', [Validators.required, Validators.pattern(/^\d{16}$/)]],
+      cardNumber: ['', [Validators.required, this.cardNumberValidator]],
       cardHolder: ['', [Validators.required, Validators.minLength(3)]],
       expiryMonth: ['', [Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])$/)]],
       expiryYear: ['', [Validators.required, Validators.pattern(/^\d{2}$/)]],
@@ -49,6 +49,17 @@ export class PaymentPageComponent implements OnInit {
 
   get fc() {
     return this.paymentForm.controls;
+  }
+
+  // Custom validator for card number that accepts formatted input (with spaces)
+  cardNumberValidator(control: any) {
+    if (!control.value) {
+      return null;
+    }
+    // Remove spaces and check if it's exactly 16 digits
+    const cardNumber = control.value.replace(/\s/g, '');
+    const isValid = /^\d{16}$/.test(cardNumber);
+    return isValid ? null : { invalidCardNumber: true };
   }
 
   formatCardNumber(event: any) {
@@ -142,8 +153,10 @@ export class PaymentPageComponent implements OnInit {
         this.toastrService.success('Payment successful!', 'Success');
         this.cartService.clearCart();
         setTimeout(() => {
-          this.router.navigateByUrl('/');
-        }, 2000);
+          this.router.navigate(['/orders'], {
+            queryParams: { success: '1', id: orderId }
+          });
+        }, 1500);
       },
       error: (errorResponse) => {
         this.isProcessing = false;

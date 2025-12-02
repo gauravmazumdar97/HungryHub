@@ -1,1 +1,86 @@
-<p>orders-page works!</p>
+<div class="orders-container">
+  <div class="orders-content">
+    <app-title title="My Orders" fontSize="1.6rem"></app-title>
+
+    <!-- Loading state -->
+    <div class="state-card" *ngIf="isLoading">
+      <div class="state-icon loading">
+        <i class="fas fa-spinner fa-spin"></i>
+      </div>
+      <h2>Loading your order...</h2>
+      <p>Please wait a moment.</p>
+    </div>
+
+    <!-- No order state -->
+    <div class="state-card" *ngIf="!isLoading && !order">
+      <div class="state-icon empty">
+        <i class="fas fa-receipt"></i>
+      </div>
+      <h2>No active orders</h2>
+      <p>You don't have any orders in progress right now.</p>
+      <button class="primary-btn" (click)="goToHome()">
+        <i class="fas fa-utensils"></i> Browse restaurants
+      </button>
+    </div>
+
+    <!-- Success banner after checkout -->
+    <div class="state-card success" *ngIf="!isLoading && order && isSuccess">
+      <div class="state-icon success-icon">
+        <i class="fas fa-check"></i>
+      </div>
+      <h2>Order placed successfully!</h2>
+      <p>Your delicious food is on its way. You can review the order details below.</p>
+    </div>
+
+    <!-- Current order details -->
+    <div class="order-card" *ngIf="!isLoading && order">
+      <div class="order-header">
+        <div>
+          <h2>Current Order</h2>
+          <p class="order-id">Order ID: {{ order.id }}</p>
+        </div>
+        <span class="status-badge">{{ order.status || 'NEW' }}</span>
+      </div>
+
+      <div class="order-meta">
+        <p>
+          <i class="fas fa-map-marker-alt"></i>
+          <span>{{ order.address }}</span>
+        </p>
+        <p *ngIf="order.createdAt">
+          <i class="fas fa-clock"></i>
+          <span>Placed on {{ order.createdAt | date:'medium' }}</span>
+        </p>
+      </div>
+
+      <div class="items-list" *ngIf="order.items && order.items.length">
+        <div class="items-header">
+          <span>Items</span>
+          <span>Price</span>
+        </div>
+        <div class="item-row" *ngFor="let item of order.items">
+          <div class="item-info">
+            <span class="item-name">{{ item.food.name }}</span>
+            <span class="item-quantity">x{{ item.quantity }}</span>
+          </div>
+          <span class="item-price">{{ item.price | currency }}</span>
+        </div>
+      </div>
+
+      <div class="order-footer">
+        <div class="total-row">
+          <span>Total</span>
+          <span class="total-amount">{{ order.totalPrice | currency }}</span>
+        </div>
+        <div class="actions">
+          <button class="secondary-btn" (click)="goToHome()">
+            <i class="fas fa-home"></i> Back to Home
+          </button>
+          <button class="primary-btn" (click)="goToCheckout()">
+            <i class="fas fa-shopping-bag"></i> Go to Checkout
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
