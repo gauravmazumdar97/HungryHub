@@ -10,7 +10,7 @@ import { DashboardPageComponent } from './components/pages/dashboard-page/dashbo
 import { CheckoutPageComponent } from './components/pages/checkout-page/checkout-page.component';
 import { PaymentPageComponent } from './components/pages/payment-page/payment-page.component';
 import { OrdersPageComponent } from './components/pages/orders-page/orders-page.component';
-
+ 
 const routes: Routes = [
   {path:'',component:HomeComponent},
   {path:'search/:searchTerm', component:HomeComponent},
