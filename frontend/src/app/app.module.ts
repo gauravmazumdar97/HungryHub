@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/partials/header/header.component';
 import { HomeComponent } from './components/pages/home/home.component';
@@ -62,6 +63,7 @@ import { OrderItemsListComponent } from './components/partials/order-items-list/
       newestOnTop:false
     }),
     FormsModule,
+    DragDropModule
   ],
   providers: [
     {provide:HTTP_INTERCEPTORS, useClass:LoadingInterceptor, multi: true }
