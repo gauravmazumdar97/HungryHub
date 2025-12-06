@@ -1,59 +1,24 @@
-<div class="top-bar">
-    <app-search></app-search>
-    <button class="btn btn-filter" (click)="openModal()">Filter</button>
-  </div>
-  
-  <app-tags></app-tags>
-  <app-not-found
-      [visible] ="!foods || !foods.length"
-      resetLinkText = "Reset Search">
-  </app-not-found>
-  
-  <div class="modal-overlay" *ngIf="showModal">
-    <div class="modal">
-      <div class="modal-header">
-        <h3>Filter Foods</h3>
-        <span class="close" (click)="closeModal()">×</span>
-      </div>
-      <div class="modal-body">
-        <div>
-          <label>Tags:</label>
-          <select multiple [(ngModel)]="selectedTags">
-            <option *ngFor="let tag of ['Italian','Fast Food','American','Japanese','Seafood']" [value]="tag">{{ tag }}</option>
-          </select>
-        </div>
-        <div class="mt-2">
-          <label>Origins:</label>
-          <select multiple [(ngModel)]="selectedOrigins">
-            <option *ngFor="let origin of ['Italy','USA','Japan']" [value]="origin">{{ origin }}</option>
-          </select>
-        </div>
-        <div class="mt-2">
-          <label>Price Range:</label>
-          <div class="price-range">
-            <input type="number" [(ngModel)]="priceRange.min" placeholder="Min">
-            <input type="number" [(ngModel)]="priceRange.max" placeholder="Max">
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn-secondary" (click)="clearFilters()" >Clear Filters</button>
-        <button class="btn-primary" (click)="applyFilter()">Apply</button>
-      </div>
-    </div>
-  </div>
-
- <ul>
+<app-search></app-search>
+<app-tags></app-tags>
+<app-not-found
+    [visible] ="!foods || !foods.length"
+    resetLinkText = "Reset Search">
+</app-not-found>
+<ul>
     <li *ngFor="let food of foods" >
         <a routerLink="/food/{{food.id}}">
             <img [src]="food.imageUrl" [alt]="food.name"/>
+            <button 
+                class="favorite-btn" 
+                *ngIf="isLoggedIn"
+                (click)="toggleFavorite($event, food)"
+                [class.active]="favorites[food.id]">
+                <i class="fas" [ngClass]="favorites[food.id] ? 'fa-heart' : 'fa-heart'"></i>
+            </button>
             <div class="content">
                 <div class="name">
                     {{food.name}}
                 </div>
-                <!-- <span class="favorite {{food.favorite?'':'not'}}">
-                    ❤
-                </span> -->
 
                 <div class="product-item-footer">
                     <div class="origins">

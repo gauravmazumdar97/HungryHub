@@ -1,33 +1,29 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
-// 🔑 Import the new standalone component
-import { AdminInventoryComponent } from './components/pages/admin/admin-inventory/admin-inventory.component';
-
-// Assuming you have other core components (Home, FoodPage, Cart)
-// import { HomeComponent } from './components/pages/home/home.component'; 
-// import { FoodPageComponent } from './components/pages/food-page/food-page.component'; 
-// import { CartPageComponent } from './components/pages/cart-page/cart-page.component'; 
-// import { AuthGuard } from './guards/auth.guard'; // Example of a regular user guard
-
-// NOTE: You must create this guard!
-// import { AdminGuard } from './guards/admin.guard'; 
+import { HomeComponent } from './components/pages/home/home.component';
+import { FoodPageComponent } from './components/pages/food-page/food-page.component';
+import { CartPageComponent } from './components/pages/cart-page/cart-page.component';
+import { LoginPageComponent } from './components/pages/login-page/login-page.component';
+import { RegisterPageComponent } from './components/pages/register-page/register-page.component';
+import { WishlistPageComponent } from './components/pages/wishlist-page/wishlist-page.component';
+import { DashboardPageComponent } from './components/pages/dashboard-page/dashboard-page.component';
+import { CheckoutPageComponent } from './components/pages/checkout-page/checkout-page.component';
+import { PaymentPageComponent } from './components/pages/payment-page/payment-page.component';
+import { OrdersPageComponent } from './components/pages/orders-page/orders-page.component';
 
 const routes: Routes = [
-  // { path: '', component: HomeComponent },
-  // { path: 'food/:id', component: FoodPageComponent },
-  // { path: 'cart', component: CartPageComponent, canActivate: [AuthGuard] },
-  
-  // 🔑 NEW ADMIN INVENTORY ROUTE
-  { 
-    path: 'admin/inventory', 
-    component: AdminInventoryComponent,
-    // This is crucial: Use an AdminGuard to protect this route.
-    // Replace 'true' with 'canActivate: [AdminGuard]' once implemented.
-    canActivate: [() => true] // Placeholder for now
-  },
-
-  // { path: '**', redirectTo: '' } // Catch all other paths
+  {path:'',component:HomeComponent},
+  {path:'search/:searchTerm', component:HomeComponent},
+  {path:'tag/:tag',component:HomeComponent},
+  {path:'food/:id', component:FoodPageComponent},
+  {path:'cart-page', component: CartPageComponent},
+  {path:'checkout', component: CheckoutPageComponent},
+  {path:'payment', component: PaymentPageComponent},
+  {path:'orders', component: OrdersPageComponent},
+  {path:'login', component:LoginPageComponent},
+  {path:'register', component:RegisterPageComponent},
+  {path:'wishlist', component: WishlistPageComponent},
+  {path:'dashboard', component: DashboardPageComponent},
 ];
 
 @NgModule({

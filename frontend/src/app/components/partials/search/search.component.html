@@ -1,4 +1,7 @@
 <div>
-    <input #s type="text" placeholder="Search Food Wave" (keyup.enter)="search(s.value)" [value]="searchTerm">
-    <button (click)="search(s.value)">Search</button>
+    <input #s type="text" placeholder="Search HungryHub..." (keyup.enter)="search(s.value)" [value]="searchTerm">
+    <button (click)="search(s.value)">
+        <i class="fas fa-search"></i>
+        <span>Search</span>
+    </button>
 </div>

@@ -1,29 +1,52 @@
 <div class="container">
     <div class="details">
-      <app-title title="Login"></app-title>
-  
-      <form [formGroup]="loginForm" (ngSubmit)="submit()">
-        <text-input
-        [control]="fc.email"
-        [showErrorsWhen]="isSubmitted"
-        type="email"
-        label="Email">
-        </text-input>
-        
-        <text-input
-        [control]="fc.password"
-        [showErrorsWhen]="isSubmitted"
-        type="password"
-        label="Password">
-        </text-input>
-        
-        <default-button text="Login"></default-button>
-        <div class="register">
-          New user? &nbsp;
-          <a routerLink="/register" [queryParams]="{returnUrl : returnUrl}">
-            Register here
-          </a>
-        </div>
-      </form>
+      <div class="tabs">
+        <a routerLink="/login" class="tab active">Sign In</a>
+        <a routerLink="/register" class="tab">Create an Account</a>
+      </div>
+
+      <div class="content">
+        <h1 class="page-title">Sign In</h1>
+        <p class="welcome-message">Welcome back, it's great to see you again!</p>
+
+        <form [formGroup]="loginForm" (ngSubmit)="submit()">
+          <text-input
+            [control]="fc.email"
+            [showErrorsWhen]="isSubmitted"
+            type="email"
+            label="Email Address">
+          </text-input>
+          
+          <div class="password-field">
+            <text-input
+              [control]="fc.password"
+              [showErrorsWhen]="isSubmitted"
+              type="password"
+              label="Password">
+            </text-input>
+            <span class="show-password">Show</span>
+          </div>
+
+          <a href="#" class="forgot-password">Forgotten your password?</a>
+          
+          <button type="submit" class="primary-button">Sign In</button>
+          <button type="button" class="secondary-button">Sign In Without Password</button>
+
+          <div class="divider">
+            <span>Or Sign in with...</span>
+          </div>
+
+          <div class="social-buttons">
+            <button type="button" class="social-button apple">
+              <i class="fab fa-apple"></i>
+              <span>Apple</span>
+            </button>
+            <button type="button" class="social-button google">
+              <i class="fab fa-google"></i>
+              <span>Google</span>
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>

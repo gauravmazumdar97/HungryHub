@@ -1,122 +1,152 @@
-import {Router} from 'express';
-import { sample_foods } from '../data'; // Assuming you use this for seeding
+import { Router, Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
 import { FoodModel } from '../models/food.model';
-// NOTE: Make sure you have implemented the 'inventory_quantity' field in FoodModel!
+import auth from '../middlewares/auth.mid'; // uses your existing auth
+
 const router = Router();
 
-// --- 1. SEED ROUTE ---
-router.get("/seed", asyncHandler(
- async (req, res) => {
-    const foodsCount = await FoodModel.countDocuments();
-    if(foodsCount > 0){
-      res.send("Seed is already done!");
-      return;
-    }
+/**
+ * PUBLIC: Seed endpoint
+ * Keep this first so you can seed without auth if needed.
+ */
+router.get(
+  '/seed',
+  asyncHandler(async (_req: Request, res: Response): Promise<void> => {
+    const count = await FoodModel.countDocuments();
+    if (count > 0) {
+      res.status(200).json({ message: 'Already seeded', count });
+      return;
+    }
 
-    await FoodModel.create(sample_foods);
-    res.send("Seed Is Done!");
-}
-))
+    // Minimal example data – adjust to your real seed if you have one
+    const sampleFoods = [
+      {
+        name: 'Margherita Pizza',
+        price: 9.99,
+        imageUrl: 'https://example.com/pizza.jpg',
+        origins: ['Italian'],
+        cookTime: '20-30',
+        stock: 100,
+      },
+      {
+        name: 'Classic Burger',
+        price: 8.49,
+        imageUrl: 'https://example.com/burger.jpg',
+        origins: ['American'],
+        cookTime: '10-15',
+        stock: 100,
+      },
+    ];
 
-// --- 2. GET ALL FOODS ROUTE ---
-router.get("/",asyncHandler(
-  async (req, res) => {
-    const foods = await FoodModel.find();
-      res.send(foods);
-  }
-))
-
-// --- 3. SEARCH FOODS ROUTE ---
-router.get("/search/:searchTerm", asyncHandler(
-  async (req, res) => {
-    const searchRegex = new RegExp(req.params.searchTerm, 'i');
-    const foods = await FoodModel.find({name: {$regex:searchRegex}})
-    res.send(foods);
-  }
-))
-
-// --- 4. GET TAGS ROUTE (for filtering) ---
-router.get("/tags", asyncHandler(
-  async (req, res) => {
-    const tags = await FoodModel.aggregate([
-      {
-        $unwind:'$tags'
-      },
-      {
-        $group:{
-          _id: '$tags',
-          count: {$sum: 1}
-        }
-      },
-      {
-        $project:{
-          _id: 0,
-          name:'$_id',
-          count: '$count'
-        }
-      }
-    ]).sort({count: -1});
-
-    const all = {
-      name : 'All',
-      count: await FoodModel.countDocuments()
-    }
-
-    tags.unshift(all);
-    res.send(tags);
-  }
-))
-
-// --- 5. GET FOODS BY TAG NAME ROUTE ---
-router.get("/tag/:tagName",asyncHandler(
-  async (req, res) => {
-    const foods = await FoodModel.find({tags: req.params.tagName})
-    res.send(foods);
-  }
-))
-
-// --- 6. GET FOOD BY ID ROUTE ---
-router.get("/:foodId", asyncHandler(
-  async (req, res) => {
-    const food = await FoodModel.findById(req.params.foodId);
-    res.send(food);
-  }
-))
-
-// ----------------------------------------------------------------------
-// 🔑 7. NEW: INVENTORY MANAGEMENT API (PUT method for updates)
-// URL: PUT /api/foods/inventory/:foodId
-// ----------------------------------------------------------------------
-router.put(
-    '/inventory/:foodId',
-    // In a real app, always add Admin Authorization middleware here!
-    asyncHandler(async (req, res) => {
-        const { foodId } = req.params;
-        const { newQuantity } = req.body; 
-
-        // 1. Validation
-        if (typeof newQuantity !== 'number' || newQuantity < 0) {
-            res.status(400).send({ message: 'Invalid quantity. Must be a non-negative number.' });
-            return;
-        }
-
-        // 2. Find and Update the Food Item
-        const updatedFood = await FoodModel.findByIdAndUpdate(
-            foodId,
-            { inventory_quantity: newQuantity },
-            { new: true, runValidators: true } 
-        );
-
-        if (!updatedFood) {
-            res.status(404).send({ message: 'Food item not found.' });
-            return;
-        }
-
-        // 3. Success Response
-        res.send(updatedFood);
-    })
+    await FoodModel.insertMany(sampleFoods);
+    res.status(201).json({ message: 'Seeded', count: sampleFoods.length });
+  })
 );
 
+/**
+ * PROTECTED: Everything below requires a valid JWT
+ * If you want the catalog public, remove router.use(auth) and add auth per-route as needed.
+ */
+router.use(auth as any);
+
+/** GET /api/foods */
+router.get(
+  '/',
+  asyncHandler(async (_req: Request, res: Response): Promise<void> => {
+    const foods = await FoodModel.find();
+    res.json(foods);
+  })
+);
+
+/** GET /api/foods/search/:term */
+router.get(
+  '/search/:term',
+  asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const term = req.params.term;
+    const regex = new RegExp(term, 'i');
+    const foods = await FoodModel.find({ name: { $regex: regex } });
+    res.json(foods);
+  })
+);
+
+/** GET /api/foods/tags
+ * Returns: [{ name: 'All', count: number }, { name: 'Italian', count: number }, ...]
+ */
+router.get(
+  '/tags',
+  asyncHandler(async (_req: Request, res: Response): Promise<void> => {
+    const tags = await FoodModel.aggregate([
+      { $unwind: '$origins' },
+      {
+        $group: {
+          _id: '$origins',
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          name: '$_id',
+          count: 1,
+        },
+      },
+      { $sort: { count: -1 } },
+    ]);
+
+    const allFoodsCount = await FoodModel.countDocuments();
+    tags.unshift({ name: 'All', count: allFoodsCount });
+
+    res.json(tags);
+  })
+);
+
+/** GET /api/foods/tag/:tag */
+router.get(
+  '/tag/:tag',
+  asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const tag = req.params.tag;
+    const foods = await FoodModel.find({ origins: tag });
+    res.json(foods);
+  })
+);
+
+/** GET /api/foods/:foodId */
+router.get(
+  '/:foodId',
+  asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const food = await FoodModel.findById(req.params.foodId);
+    if (!food) {
+      res.status(404).json({ message: 'Food not found' });
+      return;
+    }
+    res.json(food);
+  })
+);
+
+/** PUT /api/foods/:foodId  (Admin-only ideally)
+ *  Updates price and/or stock. Add an `isAdmin` middleware if you have one.
+ */
+router.put(
+  '/:foodId',
+  asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const { price, stock } = req.body;
+    const update: any = {};
+    if (price !== undefined) update.price = price;
+    if (stock !== undefined) update.stock = stock;
+
+    const updated = await FoodModel.findByIdAndUpdate(
+      req.params.foodId,
+      { $set: update },
+      { new: true }
+    );
+
+    if (!updated) {
+      res.status(404).json({ message: 'Food not found' });
+      return;
+    }
+
+    res.json(updated);
+  })
+);
 
 export default router;

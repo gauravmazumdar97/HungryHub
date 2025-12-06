@@ -1,67 +1,393 @@
 .container{
-    margin-top: 1rem;
+    margin-top: 2rem;
     display: flex;
     margin: 0 2rem 6rem 2rem;
     flex-wrap: wrap;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 2rem;
-    padding: 2rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(10px);
+    gap: 2rem;
+    background: transparent;
+    padding: 3rem;
+    animation: fadeIn 0.6s ease;
+    position: relative;
+    z-index: 1;
+    min-height: calc(100vh - 200px);
   }
   
   .content{
-    width: 35rem;
-    margin-right: 3rem;
-    background: rgba(255, 255, 255, 0.8);
-    padding: 1.5rem;
-    border-radius: 1rem;
+    width: 100%;
+    max-width: 42rem;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    animation: slideIn 0.6s ease;
+    border: 1px solid rgba(255, 255, 255, 0.3);
   }
 
-  .map{
-    background: rgba(255, 255, 255, 0.8);
-    padding: 1.5rem;
-    border-radius: 1rem;
-    margin: 1rem;
-  }
   
-  .content,form{
+.content, form{
     display: flex;
     flex-direction: column;
+    gap: 1.5rem;
   }
   
-  form{
+form{
     width: 100%;
+  }
+
+  .address-section {
+    margin-top: 1.5rem;
+    padding: 0;
+    border-radius: 12px;
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    overflow: hidden;
+  }
+
+  .autofill-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.875rem 1.5rem;
+    background: #e6f0ff;
+    border-bottom: 1px solid #d0e0ff;
+  }
+
+  .autofill-text {
+    font-size: 0.9rem;
+    color: #282c3f;
+    font-weight: 500;
+  }
+
+  .autofill-button {
+    background: #FC8019;
+    color: #ffffff;
+    border: none;
+    padding: 0.5rem 1.25rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .autofill-button:hover {
+    background: #FF8C42;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(252, 128, 25, 0.3);
+  }
+
+  .address-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1.5rem 1.75rem;
+  }
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    position: relative;
+  }
+
+  .form-field label {
+    color: #282c3f;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .form-input,
+  .select-input {
+    width: 100%;
+    padding: 0.875rem 1.2rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #282c3f;
+    background: #ffffff;
+    transition: all 0.2s ease;
+    outline: none;
+    font-family: "Poppins", sans-serif;
+    box-sizing: border-box;
+  }
+
+  .form-input:focus,
+  .select-input:focus {
+    border-color: #FC8019;
+    box-shadow: 0 0 0 3px rgba(252, 128, 25, 0.1);
+  }
+
+  .form-input.ng-invalid.ng-touched,
+  .select-input.ng-invalid.ng-touched {
+    border-color: #dc3545;
+  }
+
+  .form-input.ng-valid.ng-touched,
+  .select-input.ng-valid.ng-touched {
+    border-color: #28a745;
+  }
+
+  .form-input::placeholder {
+    color: #adb5bd;
+    font-size: 0.95rem;
+  }
+
+  .input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .input-with-icon .form-input {
+    padding-right: 2.5rem;
+  }
+
+  .input-icon {
+    position: absolute;
+    right: 1rem;
+    color: #FC8019;
+    font-size: 1rem;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .select-input {
+    padding-right: 2.5rem;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  }
+
+  .select-icon {
+    position: absolute;
+    right: 1rem;
+    top: 2.6rem;
+    color: #686b78;
+    font-size: 0.9rem;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .field-hint {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #686b78;
+    font-style: italic;
+  }
+
+  .validation-error {
+    color: #dc3545;
+    font-size: 0.85rem;
+    margin-top: -0.25rem;
+  }
+
+  .checkbox-field {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+  }
+
+  .checkbox-input {
+    width: 1.25rem;
+    height: 1.25rem;
+    cursor: pointer;
+    accent-color: #FC8019;
+  }
+
+  .checkbox-label {
+    color: #282c3f;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    margin: 0;
+  }
+
+  .delivery-instructions {
+    border-top: 1px solid #e9ecef;
+    padding-top: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  .instructions-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #282c3f;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    margin-bottom: 0.75rem;
+  }
+
+  .instructions-label i {
+    color: #686b78;
+    font-size: 0.85rem;
+    transition: transform 0.2s ease;
+  }
+
+  .instructions-toggle {
+    background: none;
+    border: none;
+    color: #FC8019;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.2s ease;
+  }
+
+  .instructions-toggle:hover {
+    color: #FF8C42;
+    text-decoration: underline;
+  }
+
+  .instructions-toggle i {
+    font-size: 0.85rem;
+    transition: transform 0.2s ease;
+  }
+
+  .instructions-content {
+    margin-top: 0.75rem;
+  }
+
+  .form-textarea {
+    width: 100%;
+    padding: 0.875rem 1.2rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #282c3f;
+    background: #ffffff;
+    transition: all 0.2s ease;
+    outline: none;
+    font-family: "Poppins", sans-serif;
+    box-sizing: border-box;
+    resize: vertical;
+    min-height: 80px;
+  }
+
+  .form-textarea:focus {
+    border-color: #FC8019;
+    box-shadow: 0 0 0 3px rgba(252, 128, 25, 0.1);
+  }
+
+  .form-textarea::placeholder {
+    color: #adb5bd;
+    font-size: 0.95rem;
+  }
+
+
+  /* Google Autocomplete dropdown styling */
+  .pac-container {
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    border: 1px solid #e9ecef;
+    margin-top: 0.25rem;
+    font-family: "Poppins", sans-serif;
+  }
+
+  .pac-item {
+    padding: 0.75rem 1rem;
+    border-top: 1px solid #f0f0f0;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .pac-item:first-child {
+    border-top: none;
+  }
+
+  .pac-item:hover {
+    background-color: #fff8f5;
+  }
+
+  .pac-item-selected {
+    background-color: #fff8f5;
+  }
+
+  .pac-icon {
+    margin-right: 0.5rem;
+  }
+
+  .pac-matched {
+    font-weight: 600;
+    color: #FC8019;
   }
   
   .buttons-container{
     flex-basis: 100%;
     display: flex;
     justify-content: center;
+    margin-top: 2rem;
   }
   
   .buttons{
-    margin: 2rem;
-    width: 35rem;
+    margin: 0;
+    width: 100%;
+    max-width: 42rem;
   }
   
   button{
     color: white;
-    background-color: #298be7;
+    background: #FC8019;
     width: 100%;
-    height: 3rem;
-    opacity: 0.8;
-    font-size: 1.3rem;
+    height: 3.5rem;
+    font-size: 1.1rem;
     border: none;
-    border-radius: 0.5rem;
-    box-shadow: 2px 2px 2px 2px grey;
-    transition: all 0.3s ease;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(252, 128, 25, 0.3);
+    transition: all 0.2s ease;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    position: relative;
   }
   
   button:hover{
-    opacity: 1;
-    cursor: pointer;
+    background: #FF8C42;
     transform: translateY(-2px);
-    box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 12px rgba(252, 128, 25, 0.4);
+  }
+
+  button:active {
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      margin: 1rem;
+      padding: 2rem 1.5rem;
+    }
+
+    .content {
+      max-width: 100%;
+      padding: 2rem 1.5rem;
+    }
+
+    .address-section {
+      padding: 0;
+    }
+
+    .autofill-banner {
+      padding: 0.75rem 1rem;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .autofill-button {
+      width: 100%;
+    }
+
+    .address-form {
+      padding: 1.25rem 1rem;
+    }
+
   }

@@ -1,54 +1,63 @@
-import {Router} from 'express';
+import { Router } from 'express';
 import { sample_users } from '../data';
 import jwt from 'jsonwebtoken';
 import asyncHandler from 'express-async-handler';
 import { User, UserModel } from '../models/user.model';
 import { HTTP_BAD_REQUEST } from '../constants/http_status';
 import bcrypt from 'bcryptjs';
-const router = Router();
 
+const router = Router();
+const PASSWORD_HASH_SALT_ROUNDS = 10;
+
+// 1. SEED ROUTE (Fixed: Hashes passwords before saving)
 router.get("/seed", asyncHandler(
   async (req, res) => {
-     const usersCount = await UserModel.countDocuments();
-     if(usersCount> 0){
-       res.send("Seed is already done!");
-       return;
-     }
- 
-     await UserModel.create(sample_users);
-     res.send("Seed Is Done!");
- }
- ))
-
-router.post("/login", asyncHandler(
-  async (req, res) => {
-    const {email, password} = req.body;
-    const user = await UserModel.findOne({email});
-  
-     if(user && (await bcrypt.compare(password,user.password))) {
-      res.send(generateTokenReponse(user));
-     }
-     else{
-       res.status(HTTP_BAD_REQUEST).send("Username or password is invalid!");
-     }
-  
-  }
-))
-  
-router.post('/register', asyncHandler(
-  async (req, res) => {
-    const {name, email, password, address} = req.body;
-    const user = await UserModel.findOne({email});
-    if(user){
-      res.status(HTTP_BAD_REQUEST)
-      .send('User is already exist, please login!');
+    const usersCount = await UserModel.countDocuments();
+    if (usersCount > 0) {
+      res.send("Seed is already done!");
       return;
     }
 
-    const encryptedPassword = await bcrypt.hash(password, 10);
+    // Hash passwords so they work with the login logic
+    const usersWithHashedPasswords = await Promise.all(sample_users.map(async (user) => {
+      const hashedPassword = await bcrypt.hash(user.password, PASSWORD_HASH_SALT_ROUNDS);
+      return { ...user, password: hashedPassword, email: user.email.toLowerCase() };
+    }));
 
-    const newUser:User = {
-      id:'',
+    await UserModel.create(usersWithHashedPasswords);
+    res.send("Seed Is Done!");
+  }
+));
+
+// 2. LOGIN ROUTE (Fixed: Normalizes email to lowercase)
+router.post("/login", asyncHandler(
+  async (req, res) => {
+    const { email, password } = req.body;
+    
+    // Convert input to lowercase to match registration
+    const user = await UserModel.findOne({ email: email.toLowerCase() });
+  
+    if (user && (await bcrypt.compare(password, user.password))) {
+      res.send(generateTokenReponse(user));
+    } else {
+      res.status(HTTP_BAD_REQUEST).send("Username or password is invalid!");
+    }
+  }
+));
+  
+router.post('/register', asyncHandler(
+  async (req, res) => {
+    const { name, email, password, address } = req.body;
+    const user = await UserModel.findOne({ email: email.toLowerCase() }); // Ensure check matches lowercase
+    if (user) {
+      res.status(HTTP_BAD_REQUEST)
+        .send('User is already exist, please login!');
+      return;
+    }
+
+    const encryptedPassword = await bcrypt.hash(password, PASSWORD_HASH_SALT_ROUNDS);
+
+    const newUser = {
       name,
       email: email.toLowerCase(),
       password: encryptedPassword,
@@ -59,24 +68,30 @@ router.post('/register', asyncHandler(
     const dbUser = await UserModel.create(newUser);
     res.send(generateTokenReponse(dbUser));
   }
-))
+));
 
-  const generateTokenReponse = (user : User) => {
-    const token = jwt.sign({
-      id: user.id, email:user.email, isAdmin: user.isAdmin
-    },process.env.JWT_SECRET!,{
-      expiresIn:"30d"
-    });
+const generateTokenReponse = (user: any) => {
+  const userId = user._id ? user._id.toString() : user.id;
+  const JWT_SECRET = process.env.JWT_SECRET;
   
-    return {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      address: user.address,
-      isAdmin: user.isAdmin,
-      token: token
-    };
+  if (!JWT_SECRET) {
+    throw new Error('JWT_SECRET is not defined in environment variables. Please create a .env file in the backend folder with JWT_SECRET=your_secret_key');
   }
   
+  const token = jwt.sign({
+    id: userId, email: user.email, isAdmin: user.isAdmin
+  }, JWT_SECRET, {
+    expiresIn: "30d"
+  });
 
-  export default router;
+  return {
+    id: userId,
+    email: user.email,
+    name: user.name,
+    address: user.address,
+    isAdmin: user.isAdmin,
+    token: token
+  };
+}
+
+export default router;

@@ -3,6 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { FoodService } from 'src/app/services/food.service';
 import { Food } from 'src/app/shared/models/food';
+import { WishlistService } from 'src/app/services/wishlist.service';
+import { UserService } from 'src/app/services/user.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-home',
@@ -11,18 +14,19 @@ import { Food } from 'src/app/shared/models/food';
 })
 export class HomeComponent implements OnInit{
 
-foods:Food[] = [];
+  foods:Food[] = [];
+  favorites: {[key: string]: boolean} = {};
+  isLoggedIn = false;
 
-selectedTags: string[] = [];
-selectedOrigins: string[] = [];
-priceRange = { min: 0, max: 1000 };
-filterName: string = '';
-filterRestaurant: string = '';
-allTags: string[] = [];
-allOrigins: string[] = [];
-filteredFoods = this.foods;
-showModal: boolean = false;
-constructor(private foodService:FoodService, activatedRoute:ActivatedRoute ) {
+  constructor(
+    private foodService:FoodService, 
+    activatedRoute:ActivatedRoute,
+    private wishlistService: WishlistService,
+    private userService: UserService,
+    private toastrService: ToastrService
+  ) { 
+    this.isLoggedIn = !!this.userService.currentUser.token;
+    
     let foodsObservable:Observable<Food[]>;
     activatedRoute.params.subscribe((params)=>{
       if(params.searchTerm)
@@ -34,41 +38,53 @@ constructor(private foodService:FoodService, activatedRoute:ActivatedRoute ) {
 
         foodsObservable.subscribe((serverFoods) => {
           this.foods = serverFoods;
+          if (this.isLoggedIn) {
+            this.loadFavorites();
+          }
         })
     })
-     
-    
-    this.allTags = [...new Set(this.foods.flatMap(f => f.tags ?? []))];
-    this.allOrigins = [...new Set(this.foods.flatMap(f => f.origins ?? []))];
-    this.filteredFoods = this.foods;
-  }
-  ngOnInit(): void {
-    throw new Error('Method not implemented.');
+  
   }
 
-    openModal() {
-      this.showModal = true;
+  ngOnInit(): void{
+
+  }
+
+  loadFavorites(): void {
+    this.foods.forEach(food => {
+      this.wishlistService.isFavorite(food.id).subscribe({
+        next: (response) => {
+          this.favorites[food.id] = response.isFavorite;
+        }
+      });
+    });
+  }
+
+  toggleFavorite(event: Event, food: Food): void {
+    event.preventDefault();
+    event.stopPropagation();
+    
+    if (this.favorites[food.id]) {
+      this.wishlistService.removeFromWishlist(food.id).subscribe({
+        next: () => {
+          this.favorites[food.id] = false;
+          this.toastrService.success('Removed from wishlist', 'Success');
+        },
+        error: () => {
+          this.toastrService.error('Failed to remove from wishlist', 'Error');
+        }
+      });
+    } else {
+      this.wishlistService.addToWishlist(food.id).subscribe({
+        next: () => {
+          this.favorites[food.id] = true;
+          this.toastrService.success('Added to wishlist', 'Success');
+        },
+        error: () => {
+          this.toastrService.error('Failed to add to wishlist', 'Error');
+        }
+      });
     }
-  
-    closeModal() {
-      this.showModal = false;
-    }
-  
-    applyFilter() {
-      this.filteredFoods = this.foods.filter(food =>
-        (this.selectedTags.length === 0 || (food.tags && food.tags.some(tag => this.selectedTags.includes(tag)))) &&
-        (this.selectedOrigins.length === 0 || food.origins.some(origin => this.selectedOrigins.includes(origin))) &&
-        food.price >= this.priceRange.min &&
-        food.price <= this.priceRange.max
-      );
-      this.closeModal();
-    }
-  
-    clearFilters() {
-      this.selectedTags = [];
-      this.selectedOrigins = [];
-      this.priceRange = { min: 0, max: 1000 };
-      this.filteredFoods = this.foods;
-    }
-  
+  }
+
 }
