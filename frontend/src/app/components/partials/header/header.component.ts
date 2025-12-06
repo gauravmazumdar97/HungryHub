@@ -4,6 +4,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { CartService } from 'src/app/services/cart.service';
 import { UserService } from 'src/app/services/user.service';
+import { ThemeService } from 'src/app/services/theme.service';
 import { User } from '../../../shared/models/user';
 
 @Component({
@@ -16,12 +17,14 @@ export class HeaderComponent implements OnInit{
   cartQuantity=0;
   user!:User;
   isHomePage: boolean = false;
+  isDarkMode = false;
 
   constructor(
     cartService:CartService,
     private userService:UserService,
     private location: Location,
-    private router: Router
+    private router: Router,
+    public themeService: ThemeService
   ) { 
     cartService.getCartObservable().subscribe((newCart) => {
       this.cartQuantity = newCart.totalCount;
@@ -42,6 +45,11 @@ export class HeaderComponent implements OnInit{
       .subscribe(() => {
         this.checkRoute();
       });
+
+    // Subscribe to theme changes
+    this.themeService.theme$.subscribe(theme => {
+      this.isDarkMode = theme === 'dark';
+    });
   }
 
   private checkRoute(): void {
@@ -60,6 +68,10 @@ export class HeaderComponent implements OnInit{
 
   goBack(): void {
     this.location.back();
+  }
+
+  toggleTheme(): void {
+    this.themeService.toggleTheme();
   }
 
 }

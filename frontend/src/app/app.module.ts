@@ -32,6 +32,7 @@ import { WishlistPageComponent } from './components/pages/wishlist-page/wishlist
 import { DashboardPageComponent } from './components/pages/dashboard-page/dashboard-page.component';
 import { PaymentPageComponent } from './components/pages/payment-page/payment-page.component';
 import { OrdersPageComponent } from './components/pages/orders-page/orders-page.component';
+import { FooterComponent } from './components/partials/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { OrdersPageComponent } from './components/pages/orders-page/orders-page.
     DashboardPageComponent,
     PaymentPageComponent,
     OrdersPageComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,

@@ -47,11 +47,11 @@
 }
 
 .stat-card {
-  background: rgba(255, 255, 255, 0.98);
+  background: var(--card-bg);
   border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 20px var(--shadow-color);
+  border: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -61,7 +61,7 @@
 
 .stat-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 8px 30px var(--shadow-color);
 }
 
 .stat-card.revenue {
@@ -97,7 +97,7 @@
   font-size: 2rem;
   font-weight: 800;
   margin: 0;
-  color: #212529;
+  color: var(--text-color);
 }
 
 .stat-card.revenue .stat-info h3 {
@@ -106,7 +106,7 @@
 
 .stat-info p {
   margin: 0.5rem 0 0 0;
-  color: #6c757d;
+  color: var(--text-color-secondary);
   font-size: 0.9rem;
 }
 
@@ -117,24 +117,25 @@
 /* main sections */
 .section {
   margin-bottom: 3rem;
-  background: rgba(255, 255, 255, 0.98);
+  background: var(--card-bg);
   border-radius: 12px;
   padding: 2rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 20px var(--shadow-color);
+  border: 1px solid var(--border-color);
   backdrop-filter: blur(10px);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .section-title {
   font-size: 1.8rem;
   font-weight: 700;
-  color: #212529;
+  color: var(--text-color);
   margin-bottom: 0.25rem;
 }
 
 .section-subtitle {
   margin: 0 0 1.5rem 0;
-  color: #6c757d;
+  color: var(--text-color-secondary);
   font-size: 0.9rem;
 }
 

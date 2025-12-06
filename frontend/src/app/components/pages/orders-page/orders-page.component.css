@@ -13,11 +13,12 @@
 .state-card,
 .order-card {
   margin-top: 1.5rem;
-  background: rgba(255, 255, 255, 0.95);
+  background: var(--card-bg);
   border-radius: 12px;
   padding: 1.75rem 2rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 8px 32px var(--shadow-color);
+  border: 1px solid var(--border-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .state-card {
@@ -45,8 +46,8 @@
 }
 
 .state-icon.empty {
-  background: #f0f2f5;
-  color: #686b78;
+  background: var(--light-gray);
+  color: var(--text-color-secondary);
 }
 
 .state-icon.success-icon {
@@ -57,12 +58,12 @@
 .state-card h2 {
   margin: 0 0 0.5rem;
   font-size: 1.25rem;
-  color: #282c3f;
+  color: var(--text-color);
 }
 
 .state-card p {
   margin: 0 0 1.25rem;
-  color: #686b78;
+  color: var(--text-color-secondary);
 }
 
 .order-header {
@@ -75,13 +76,13 @@
 .order-header h2 {
   margin: 0;
   font-size: 1.25rem;
-  color: #282c3f;
+  color: var(--text-color);
 }
 
 .order-id {
   margin: 0.25rem 0 0;
   font-size: 0.9rem;
-  color: #686b78;
+  color: var(--text-color-secondary);
 }
 
 .status-badge {
@@ -98,7 +99,7 @@
 .order-meta {
   margin-bottom: 1.25rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .order-meta p {
@@ -106,7 +107,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #686b78;
+  color: var(--text-color-secondary);
   font-size: 0.95rem;
 }
 

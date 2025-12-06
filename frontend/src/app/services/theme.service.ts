@@ -1,40 +1,51 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-export interface ThemeColors {
-  textColor: string;
-  textColorSecondary: string;
-  backgroundColor: string;
-  isLight: boolean;
-}
+export type Theme = 'light' | 'dark';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ThemeService {
-  private themeSubject = new BehaviorSubject<ThemeColors>({
-    textColor: '#000000',
-    textColorSecondary: '#333333',
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    isLight: true
-  });
-
-  public theme$: Observable<ThemeColors> = this.themeSubject.asObservable();
+  private themeSubject: BehaviorSubject<Theme>;
+  public theme$: Observable<Theme>;
 
   constructor() {
-    // Set fixed CSS variables on document root (no dynamic changes)
-    document.documentElement.style.setProperty('--text-color', '#282c3f');
-    document.documentElement.style.setProperty('--text-color-secondary', '#686b78');
-    document.documentElement.style.setProperty('--bg-overlay', 'rgba(255, 255, 255, 0.15)');
+    // Get theme from localStorage or default to 'light'
+    const savedTheme = localStorage.getItem('theme') as Theme;
+    const initialTheme = savedTheme || 'light';
+    
+    this.themeSubject = new BehaviorSubject<Theme>(initialTheme);
+    this.theme$ = this.themeSubject.asObservable();
+    
+    // Apply initial theme
+    this.applyTheme(initialTheme);
   }
 
-  updateTheme(brightness: number): void {
-    // Disabled - no longer dynamically changing theme based on image brightness
-    // Keeping method for backward compatibility but it does nothing
-  }
-
-  getCurrentTheme(): ThemeColors {
+  get currentTheme(): Theme {
     return this.themeSubject.value;
   }
-}
 
+  toggleTheme(): void {
+    const newTheme = this.currentTheme === 'light' ? 'dark' : 'light';
+    this.setTheme(newTheme);
+  }
+
+  setTheme(theme: Theme): void {
+    this.themeSubject.next(theme);
+    localStorage.setItem('theme', theme);
+    this.applyTheme(theme);
+  }
+
+  private applyTheme(theme: Theme): void {
+    const root = document.documentElement;
+    
+    if (theme === 'dark') {
+      root.classList.add('dark-theme');
+      root.classList.remove('light-theme');
+    } else {
+      root.classList.add('light-theme');
+      root.classList.remove('dark-theme');
+    }
+  }
+}
