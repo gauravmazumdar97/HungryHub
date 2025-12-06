@@ -1,0 +1,120 @@
+<div class="relative min-h-screen bg-cover bg-center font-sans" 
+     style="background-image: url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1920&q=80');">
+
+  <div class="absolute inset-0 bg-black/60"></div>
+
+  <div class="relative z-10 flex items-center justify-center min-h-screen px-4 py-10">
+    
+    <div *ngIf="currentStep === 'prompt'" 
+         class="bg-white/95 backdrop-blur-sm p-8 md:p-12 rounded-3xl shadow-2xl max-w-2xl w-full text-center border border-white/20">
+      <h1 class="text-4xl md:text-5xl font-extrabold text-slate-800 mb-4 tracking-tight">Reserve Your Table</h1>
+      <p class="text-lg text-slate-600 mb-10 leading-relaxed">Experience fine dining. Choose an option below.</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <button (click)="startPreOrder()" class="group bg-amber-600 hover:bg-amber-700 text-white py-4 px-6 rounded-xl transition-all shadow-lg flex flex-col items-center justify-center">
+          <span class="font-bold text-lg">Pre-order Food</span>
+        </button>
+        <button (click)="startHallBooking()" class="group bg-purple-600 hover:bg-purple-700 text-white py-4 px-6 rounded-xl transition-all shadow-lg flex flex-col items-center justify-center">
+          <span class="font-bold text-lg">Private Hall</span>
+        </button>
+        <button (click)="skipPreOrder()" class="group bg-slate-800 hover:bg-slate-900 text-white py-4 px-6 rounded-xl transition-all shadow-lg flex flex-col items-center justify-center">
+          <span class="font-bold text-lg">Book Table</span>
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="currentStep === 'menu'" class="w-full max-w-7xl bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col lg:flex-row h-[85vh]">
+        
+        <div class="flex-1 flex flex-col h-full overflow-hidden relative z-0">
+            <div class="p-6 bg-white border-b border-slate-200 flex justify-between items-center shadow-sm z-10">
+                <div><h2 class="text-2xl font-bold text-slate-800">Select Menu</h2></div>
+                <button (click)="currentStep = 'prompt'" class="text-slate-400 hover:text-red-500 font-medium">Cancel</button>
+            </div>
+            <div class="p-6 overflow-y-auto bg-slate-50 flex-1">
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 pb-20">
+                    <div *ngFor="let item of menuItems" class="bg-white border border-slate-200 rounded-xl overflow-hidden hover:shadow-xl transition-all flex flex-col">
+                        <div class="h-40 overflow-hidden relative shrink-0"><img [src]="item.image" class="w-full h-full object-cover"></div>
+                        <div class="p-4 flex flex-col flex-1">
+                            <div class="flex justify-between mb-2">
+                                <h3 class="font-bold text-lg text-slate-800">{{item.name}}</h3>
+                                <span class="text-amber-600 font-bold bg-amber-50 px-2 py-1 rounded text-sm">${{item.price}}</span>
+                            </div>
+                            <p class="text-sm text-slate-500 mb-4 flex-grow">{{item.description}}</p>
+                            <button (click)="addToCart(item)" class="w-full bg-slate-100 hover:bg-amber-600 hover:text-white text-slate-700 font-semibold py-2 rounded-lg mt-auto">+ Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-full lg:w-96 bg-white border-l border-slate-200 flex flex-col h-full shadow-lg z-20">
+            <div class="p-5 bg-slate-800 text-white shadow-md shrink-0">
+                <h3 class="text-lg font-bold flex justify-between"><span>Your Order</span><span class="bg-amber-500 text-white text-xs px-2 py-1 rounded-full">{{cart.length}} Items</span></h3>
+            </div>
+            <div class="flex-1 overflow-y-auto p-4 space-y-3 bg-slate-50">
+                <div *ngFor="let item of cart; let i = index" class="bg-white p-3 rounded-lg border border-slate-200 shadow-sm flex gap-3">
+                    <img [src]="item.image" class="w-16 h-16 rounded-md object-cover bg-slate-100 shrink-0">
+                    <div class="flex-1 min-w-0 flex flex-col justify-center">
+                        <h4 class="font-semibold text-slate-800 text-sm truncate">{{item.name}}</h4>
+                        <div class="flex justify-between items-center mt-1">
+                            <span class="text-xs text-slate-500">Qty: <strong>{{item.quantity}}</strong></span>
+                            <span class="text-amber-600 font-bold text-sm">${{item.price * item.quantity}}</span>
+                        </div>
+                    </div>
+                    <button (click)="removeFromCart(i)" class="text-slate-300 hover:text-red-500 px-2">✕</button>
+                </div>
+            </div>
+
+            <div class="p-5 border-t border-slate-200 bg-white shrink-0">
+                <div class="mb-4">
+                    <label class="text-xs font-bold text-slate-500 uppercase">Have a Coupon?</label>
+                    <div class="flex gap-2 mt-1">
+                        <input type="text" 
+       [(ngModel)]="couponCode" 
+       placeholder="ENTER CODE" 
+       [disabled]="isCouponApplied"
+       class="w-full bg-slate-100 border-2 border-slate-300 text-slate-900 font-bold rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-500 focus:bg-white uppercase transition-colors placeholder-slate-400">
+                        <button (click)="applyCoupon()" [disabled]="isCouponApplied || !couponCode" class="bg-slate-800 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-slate-700 disabled:opacity-50">{{ isCouponApplied ? '✓' : 'Apply' }}</button>
+                    </div>
+                    <p *ngIf="couponMessage" class="text-xs mt-1" [ngClass]="isCouponApplied ? 'text-green-600' : 'text-red-500'">{{ couponMessage }}</p>
+                </div>
+                <div class="space-y-1 mb-4">
+                    <div class="flex justify-between text-slate-500 text-sm"><span>Subtotal</span><span>${{ getTotal() }}</span></div>
+                    <div *ngIf="isCouponApplied" class="flex justify-between text-green-600 text-sm font-bold"><span>Discount ({{discountPercent}}%)</span><span>-${{ getDiscountAmount() | number:'1.0-2' }}</span></div>
+                    <div class="flex justify-between items-end pt-2 border-t border-slate-100"><span class="text-slate-800 font-bold">Final Total</span><span class="text-3xl font-extrabold text-amber-600">${{ getFinalTotal() | number:'1.0-2' }}</span></div>
+                </div>
+                <button (click)="proceedToDetails()" [disabled]="cart.length === 0" class="w-full bg-amber-600 text-white py-3 rounded-xl font-bold hover:bg-amber-700 disabled:opacity-50">Proceed to Booking</button>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="currentStep === 'halls'" class="w-full max-w-6xl">
+        <h2 class="text-4xl font-bold text-white text-center mb-10 drop-shadow-md">Select a Package</h2>
+        <div class="flex flex-wrap justify-center gap-6">
+            <div *ngFor="let pkg of hallPackages" class="bg-white p-8 rounded-2xl w-80 shadow-2xl flex flex-col transform hover:-translate-y-2 transition-transform duration-300 relative" [class.border-4]="pkg.isPopular" [class.border-amber-500]="pkg.isPopular">
+                <div *ngIf="pkg.isPopular" class="absolute -top-4 left-1/2 -translate-x-1/2 bg-amber-500 text-white px-4 py-1 rounded-full text-sm font-bold uppercase">Popular</div>
+                <h3 class="text-xl font-bold text-slate-600 text-center uppercase">{{pkg.name}}</h3>
+                <div class="text-4xl font-extrabold text-slate-800 text-center my-4">{{pkg.price}}</div>
+                <p class="text-center text-slate-500 mb-6 font-medium">{{pkg.capacity}}</p>
+                <ul class="space-y-3 mb-8 flex-1"><li *ngFor="let feat of pkg.features" class="flex items-center text-slate-600 text-sm"><span class="text-green-500 mr-2">✓</span> {{feat}}</li></ul>
+                <button (click)="selectHall(pkg.name)" class="w-full py-3 rounded-xl font-bold transition-colors bg-slate-200 text-slate-700 hover:bg-slate-300">Select Package</button>
+            </div>
+        </div>
+        <div class="text-center mt-8"><button (click)="currentStep = 'prompt'" class="text-white underline hover:text-amber-400">Back</button></div>
+    </div>
+
+    <div *ngIf="currentStep === 'form'" class="bg-white p-8 md:p-10 rounded-2xl shadow-2xl max-w-lg w-full">
+        <h2 class="text-3xl font-bold text-slate-800 mb-6 text-center">Finalize Booking</h2>
+        <div *ngIf="reservation.hallPackage" class="bg-purple-50 text-purple-700 p-4 rounded-lg mb-6 border border-purple-200"><strong>Event:</strong> You are booking the {{reservation.hallPackage}}</div>
+        <div *ngIf="cart.length > 0" class="bg-amber-50 text-amber-700 p-4 rounded-lg mb-6 border border-amber-200"><strong>Pre-order:</strong> {{cart.length}} items. <div class="text-sm mt-1 font-bold">Total to Pay: ${{ getFinalTotal() | number:'1.0-2' }}</div></div>
+
+        <form (submit)="submitReservation()" class="space-y-4">
+            <div><label class="block text-sm font-bold text-slate-700 mb-1">Full Name</label><input type="text" [(ngModel)]="reservation.name" name="name" required class="w-full p-3 border border-slate-300 rounded-lg"></div>
+            <div><label class="block text-sm font-bold text-slate-700 mb-1">Date & Time</label><input type="datetime-local" [(ngModel)]="reservation.date" name="date" required class="w-full p-3 border border-slate-300 rounded-lg"></div>
+            <div><label class="block text-sm font-bold text-slate-700 mb-1">Number of Guests</label><input type="number" [(ngModel)]="reservation.guests" name="guests" min="1" required class="w-full p-3 border border-slate-300 rounded-lg"></div>
+            <button type="submit" class="w-full bg-slate-900 text-white font-bold py-4 rounded-xl hover:bg-slate-800 transition-colors shadow-lg mt-4">Confirm Reservation</button>
+            <button type="button" (click)="currentStep = 'prompt'" class="w-full text-slate-500 py-2 hover:text-slate-800">Cancel</button>
+        </form>
+    </div>
+  </div>
+</div>

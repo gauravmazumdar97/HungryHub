@@ -7,6 +7,7 @@ import { LoginPageComponent } from './components/pages/login-page/login-page.com
 import { RegisterPageComponent } from './components/pages/register-page/register-page.component';
 import { WishlistPageComponent } from './components/pages/wishlist-page/wishlist-page.component';
 import { DashboardPageComponent } from './components/pages/dashboard-page/dashboard-page.component';
+import { ReservationComponent } from './components/pages/reservation/reservation.component';
 
 const routes: Routes = [
   {path:'',component:HomeComponent},
@@ -18,6 +19,7 @@ const routes: Routes = [
   {path:'register', component:RegisterPageComponent},
   {path:'wishlist', component: WishlistPageComponent},
   {path:'dashboard', component: DashboardPageComponent},
+  { path: 'reservation', component: ReservationComponent },
 ];
 
 @NgModule({

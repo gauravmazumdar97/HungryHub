@@ -261,3 +261,23 @@ a span:not(.logo-text):not(.logo-hub){
         padding: 0.5rem 0.8rem;
     }
 }
+/* Button Design */
+.reservation-btn {
+  background-color: #e72929; /* Vibrant Red/Orange - appetizing color */
+  color: white;
+  padding: 0.6rem 1.5rem;    /* Spacing inside the button */
+  border-radius: 50px;       /* Makes it pill-shaped/rounded */
+  text-decoration: none;     /* Removes the underline */
+  font-weight: 600;          /* Makes text slightly bold */
+  font-size: 0.9rem;
+  margin-right: 20px;        /* Space between button and Dark Mode toggle */
+  transition: all 0.3s ease; /* Smooth animation for hover effects */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle drop shadow */
+}
+
+/* Hover Effect (When you move mouse over it) */
+.reservation-btn:hover {
+  background-color: #c11f1f; /* Slightly darker red on hover */
+  transform: translateY(-2px); /* Button moves up slightly */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Shadow grows */
+}

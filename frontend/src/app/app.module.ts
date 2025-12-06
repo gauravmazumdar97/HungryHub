@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/partials/header/header.component';
@@ -14,9 +14,10 @@ import { CartPageComponent } from './components/pages/cart-page/cart-page.compon
 import { TitleComponent } from './components/partials/title/title.component';
 import { NotFoundComponent } from './components/partials/not-found/not-found.component';
 import { LoginPageComponent } from './components/pages/login-page/login-page.component';
-import { ReactiveFormsModule } from '@angular/forms';
+// *** FIXED: Imported FormsModule here ***
+import { ReactiveFormsModule, FormsModule } from '@angular/forms'; 
 import { ToastrModule } from 'ngx-toastr';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InputContainerComponent } from './components/partials/input-container/input-container.component';
 import { InputValidationComponent } from './components/partials/input-validation/input-validation.component';
 import { TextInputComponent } from './components/partials/text-input/text-input.component';
@@ -30,6 +31,7 @@ import { OrderItemsListComponent } from './components/partials/order-items-list/
 import { DynamicBackgroundComponent } from './components/partials/dynamic-background/dynamic-background.component';
 import { WishlistPageComponent } from './components/pages/wishlist-page/wishlist-page.component';
 import { DashboardPageComponent } from './components/pages/dashboard-page/dashboard-page.component';
+import { ReservationComponent } from './components/pages/reservation/reservation.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +56,7 @@ import { DashboardPageComponent } from './components/pages/dashboard-page/dashbo
     DynamicBackgroundComponent,
     WishlistPageComponent,
     DashboardPageComponent,
+    ReservationComponent,
   ],
   imports: [
     BrowserModule,
@@ -63,15 +66,16 @@ import { DashboardPageComponent } from './components/pages/dashboard-page/dashbo
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
+    FormsModule, // *** FIXED: Added this to imports ***
     ToastrModule.forRoot({
-      timeOut:3000,
-      positionClass:'toast-bottom-right',
-      newestOnTop:false
+      timeOut: 3000,
+      positionClass: 'toast-bottom-right',
+      newestOnTop: false
     })
   ],
   providers: [
-    {provide:HTTP_INTERCEPTORS, useClass:LoadingInterceptor, multi: true },
-    {provide:HTTP_INTERCEPTORS, useClass:AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })
