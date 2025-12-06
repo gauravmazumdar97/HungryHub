@@ -1,9 +1,9 @@
 h1 {
   color: #ffffff;
-  font-size: 2.5rem;
-  font-weight: 800;
-  margin: 1.5rem 0;
-  text-align: center;
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin: 1.5rem 0;
+    text-align: center;
   animation: titleEntrance 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
   padding: 2rem 3rem;
   border-radius: 20px;

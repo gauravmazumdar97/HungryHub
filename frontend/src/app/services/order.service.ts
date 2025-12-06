@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ORDER_CREATE_URL, ORDER_NEW_FOR_CURRENT_USER_URL, ORDER_PAY_URL, ORDER_TRACK_URL, ORDER_RAZORPAY_CREATE_URL, ORDER_RAZORPAY_VERIFY_URL } from '../shared/constants/urls';
+import { ORDER_CREATE_URL, ORDER_NEW_FOR_CURRENT_USER_URL, ORDER_PAY_URL, ORDER_TRACK_URL, ORDER_RAZORPAY_CREATE_URL, ORDER_RAZORPAY_VERIFY_URL, ORDER_MY_ORDERS_URL } from '../shared/constants/urls';
 import { Order } from '../shared/models/order';
 
 @Injectable({
@@ -18,7 +18,8 @@ export class OrderService {
     return this.http.get<Order>(ORDER_NEW_FOR_CURRENT_USER_URL);
   }
 
-  pay(paymentId: string): Observable<string> {
+  // dummy payment – paymentId optional
+  pay(paymentId?: string): Observable<string> {
     return this.http.post<string>(ORDER_PAY_URL, { paymentId });
   }
 
@@ -32,5 +33,10 @@ export class OrderService {
 
   trackOrderById(id: string): Observable<Order> {
     return this.http.get<Order>(ORDER_TRACK_URL + id);
+  }
+
+  // ✅ NEW: get full history for current user
+  getMyOrders(): Observable<Order[]> {
+    return this.http.get<Order[]>(ORDER_MY_ORDERS_URL);
   }
 }

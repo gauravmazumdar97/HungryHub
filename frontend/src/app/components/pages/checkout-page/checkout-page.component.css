@@ -26,13 +26,13 @@
   }
 
   
-.content, form{
+  .content, form{
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
   }
   
-form{
+  form{
     width: 100%;
   }
 

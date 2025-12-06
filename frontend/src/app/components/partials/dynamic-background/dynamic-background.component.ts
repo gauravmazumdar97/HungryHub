@@ -29,7 +29,7 @@ export class DynamicBackgroundComponent implements OnInit, OnDestroy {
   ];
 
   currentImageIndex: number = 0;
-  currentImage: string = '';
+    currentImage: string = '';
   nextImage: string = '';
   isTransitioning: boolean = false;
   private intervalId: any;

@@ -1,87 +1,139 @@
-import {Router} from 'express';
-import { sample_foods, sample_tags } from '../data';
+import { Router, Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
 import { FoodModel } from '../models/food.model';
+import { sample_foods } from '../data';
+import auth from '../middlewares/auth.mid';
+
 const router = Router();
 
-router.get("/seed", asyncHandler(
- async (req, res) => {
-    const foodsCount = await FoodModel.countDocuments();
-    console.log(`[foods] GET /seed - Current foods count: ${foodsCount}`);
-    if(foodsCount> 0){
-      res.send("Seed is already done!");
+/**
+ * PUBLIC: Seed endpoint
+ * Keep this first so you can seed without auth if needed.
+ */
+router.get(
+  '/seed',
+  asyncHandler(async (_req: Request, res: Response): Promise<void> => {
+    const count = await FoodModel.countDocuments();
+    if (count > 0) {
+      res.status(200).json({ message: 'Already seeded', count });
       return;
     }
 
     // Remove 'id' field from sample_foods as MongoDB will create _id automatically
-    const foodsToInsert = sample_foods.map(({id, ...food}) => food);
-    const createdFoods = await FoodModel.create(foodsToInsert);
-    console.log(`[foods] GET /seed - Created ${createdFoods.length} foods`);
-    res.send("Seed Is Done!");
-}
-))
+    const foodsToInsert = sample_foods.map(({id, ...food}) => ({
+      ...food,
+      stock: food.stock !== undefined ? food.stock : 100
+    }));
+    
+    await FoodModel.insertMany(foodsToInsert);
+    res.status(201).json({ message: 'Seeded', count: foodsToInsert.length });
+  })
+);
 
+/**
+ * PROTECTED: Everything below requires a valid JWT
+ * If you want the catalog public, remove router.use(auth) and add auth per-route as needed.
+ */
+router.use(auth as any);
 
-router.get("/",asyncHandler(
-  async (req, res) => {
+/** GET /api/foods */
+router.get(
+  '/',
+  asyncHandler(async (_req: Request, res: Response): Promise<void> => {
     const foods = await FoodModel.find();
-    console.log(`[foods] GET / - Found ${foods.length} foods`);
-    res.send(foods);
-  }
-))
+    res.json(foods);
+  })
+);
 
-router.get("/search/:searchTerm", asyncHandler(
-  async (req, res) => {
-    const searchRegex = new RegExp(req.params.searchTerm, 'i');
-    const foods = await FoodModel.find({name: {$regex:searchRegex}})
-    res.send(foods);
-  }
-))
+/** GET /api/foods/search/:term */
+router.get(
+  '/search/:term',
+  asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const term = req.params.term;
+    const regex = new RegExp(term, 'i');
+    const foods = await FoodModel.find({ name: { $regex: regex } });
+    res.json(foods);
+  })
+);
 
-router.get("/tags", asyncHandler(
-  async (req, res) => {
+/** GET /api/foods/tags
+ * Returns: [{ name: 'All', count: number }, { name: 'Italian', count: number }, ...]
+ */
+router.get(
+  '/tags',
+  asyncHandler(async (_req: Request, res: Response): Promise<void> => {
     const tags = await FoodModel.aggregate([
+      { $unwind: '$origins' },
       {
-        $unwind:'$tags'
+        $group: {
+          _id: '$origins',
+          count: { $sum: 1 },
+        },
       },
       {
-        $group:{
-          _id: '$tags',
-          count: {$sum: 1}
-        }
-      },
-      {
-        $project:{
+        $project: {
           _id: 0,
-          name:'$_id',
-          count: '$count'
-        }
-      }
-    ]).sort({count: -1});
+          name: '$_id',
+          count: 1,
+        },
+      },
+      { $sort: { count: -1 } },
+    ]);
 
-    const all = {
-      name : 'All',
-      count: await FoodModel.countDocuments()
+    const allFoodsCount = await FoodModel.countDocuments();
+    tags.unshift({ name: 'All', count: allFoodsCount });
+
+    res.json(tags);
+  })
+);
+
+/** GET /api/foods/tag/:tag */
+router.get(
+  '/tag/:tag',
+  asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const tag = req.params.tag;
+    const foods = await FoodModel.find({ origins: tag });
+    res.json(foods);
+  })
+);
+
+/** GET /api/foods/:foodId */
+router.get(
+  '/:foodId',
+  asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const food = await FoodModel.findById(req.params.foodId);
+    if (!food) {
+      res.status(404).json({ message: 'Food not found' });
+      return;
+    }
+    res.json(food);
+  })
+);
+
+/** PUT /api/foods/:foodId  (Admin-only ideally)
+ *  Updates price and/or stock. Add an `isAdmin` middleware if you have one.
+ */
+router.put(
+  '/:foodId',
+  asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const { price, stock } = req.body;
+    const update: any = {};
+    if (price !== undefined) update.price = price;
+    if (stock !== undefined) update.stock = stock;
+
+    const updated = await FoodModel.findByIdAndUpdate(
+      req.params.foodId,
+      { $set: update },
+      { new: true }
+    );
+
+    if (!updated) {
+      res.status(404).json({ message: 'Food not found' });
+      return;
     }
 
-    tags.unshift(all);
-    res.send(tags);
-  }
-))
-
-router.get("/tag/:tagName",asyncHandler(
-  async (req, res) => {
-    const foods = await FoodModel.find({tags: req.params.tagName})
-    res.send(foods);
-  }
-))
-
-router.get("/:foodId", asyncHandler(
-  async (req, res) => {
-    const food = await FoodModel.findById(req.params.foodId);
-    res.send(food);
-  }
-))
-
+    res.json(updated);
+  })
+);
 
 export default router;

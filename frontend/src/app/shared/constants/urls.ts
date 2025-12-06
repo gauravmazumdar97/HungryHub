@@ -17,6 +17,9 @@ export const ORDER_TRACK_URL = ORDER_URL + '/track/';
 export const ORDER_RAZORPAY_CREATE_URL = ORDER_URL + '/create-razorpay-order';
 export const ORDER_RAZORPAY_VERIFY_URL = ORDER_URL + '/verify-razorpay-payment';
 
+// ✅ NEW:
+export const ORDER_MY_ORDERS_URL = ORDER_URL + '/myOrders';
+
 export const WISHLIST_URL = BASE_URL + '/api/wishlist';
 export const WISHLIST_MY_URL = WISHLIST_URL + '/my-wishlist';
 export const WISHLIST_ADD_URL = WISHLIST_URL + '/add/';
@@ -25,3 +28,4 @@ export const WISHLIST_CHECK_URL = WISHLIST_URL + '/check/';
 
 export const ANALYTICS_URL = BASE_URL + '/api/analytics';
 export const ANALYTICS_DASHBOARD_URL = ANALYTICS_URL + '/dashboard';
+

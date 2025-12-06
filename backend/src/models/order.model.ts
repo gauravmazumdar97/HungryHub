@@ -20,23 +20,24 @@ export interface Order {
   status: string;
   user: Schema.Types.ObjectId;
   createdAt: Date;
+  updatedAt: Date;
 }
 
 export const OrderSchema = new Schema<Order>(
   {
+    name: { type: String, required: true },
+    address: { type: String, required: true },
+    addressLatLng: {
+      lat: { type: Number, required: false },
+      lng: { type: Number, required: false }
+    },
+    paymentId: { type: String },
+    totalPrice: { type: Number, required: true },
     items: [{
       food: { type: Schema.Types.ObjectId, ref: 'food', required: true },
       price: { type: Number, required: true },
       quantity: { type: Number, required: true }
     }],
-    totalPrice: { type: Number, required: true },
-    name: { type: String, required: true },
-    address: { type: String, required: true },
-    addressLatLng: {
-      lat: { type: Number },
-      lng: { type: Number }
-    },
-    paymentId: { type: String },
     status: { type: String, default: 'NEW' },
     user: { type: Schema.Types.ObjectId, ref: 'user', required: true }
   },
@@ -51,5 +52,9 @@ export const OrderSchema = new Schema<Order>(
   }
 );
 
-export const OrderModel = model<Order>('order', OrderSchema);
+// Create virtual id field that maps to _id
+OrderSchema.virtual('id').get(function() {
+  return this._id.toHexString();
+});
 
+export const OrderModel = model<Order>('order', OrderSchema);
