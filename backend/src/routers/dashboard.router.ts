@@ -4,7 +4,7 @@ import { OrderModel } from '../models/order.model';
 import { FoodModel } from '../models/food.model';
 import { WishlistModel } from '../models/wishlist.model';
 import { UserModel } from '../models/user.model';
-import auth, { AuthRequest } from '../middlewares/auth.mid';
+import auth from '../middlewares/auth.mid';
 import { OrderStatus } from '../constants/order_status';
 
 const router = Router();
@@ -135,4 +135,3 @@ router.get('/dashboard', asyncHandler(
 ));
 
 export default router;
-

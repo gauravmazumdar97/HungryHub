@@ -4,9 +4,9 @@
             <button *ngIf="!isHomePage" class="back-button" (click)="goBack()" title="Go Back">
                 <i class="fas fa-arrow-left"></i>
             </button>
-            <a routerLink="/" class="logo">
-                <span class="logo-text">Hungry<span class="logo-hub">Hub</span></span>
-            </a>
+        <a routerLink="/" class="logo">
+            <span class="logo-text">Hungry<span class="logo-hub">Hub</span></span>
+        </a>
         </div>
         <nav>
             <ul>
@@ -57,6 +57,13 @@
                         <span>Cart</span>
                         <span class="cart-badge" *ngIf="cartQuantity">{{cartQuantity}}</span>
                     </a>
+                </li>
+
+                <li>
+                    <button class="theme-toggle" (click)="toggleTheme()" [title]="isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'">
+                        <i class="fas" [ngClass]="isDarkMode ? 'fa-sun' : 'fa-moon'"></i>
+                        <span>{{ isDarkMode ? 'Light' : 'Dark' }}</span>
+                    </button>
                 </li>
             </ul>
         </nav>

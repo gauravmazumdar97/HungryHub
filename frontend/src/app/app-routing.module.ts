@@ -7,19 +7,23 @@ import { LoginPageComponent } from './components/pages/login-page/login-page.com
 import { RegisterPageComponent } from './components/pages/register-page/register-page.component';
 import { WishlistPageComponent } from './components/pages/wishlist-page/wishlist-page.component';
 import { DashboardPageComponent } from './components/pages/dashboard-page/dashboard-page.component';
-import { ReservationComponent } from './components/pages/reservation/reservation.component';
-
+import { CheckoutPageComponent } from './components/pages/checkout-page/checkout-page.component';
+import { PaymentPageComponent } from './components/pages/payment-page/payment-page.component';
+import { OrdersPageComponent } from './components/pages/orders-page/orders-page.component';
+ 
 const routes: Routes = [
   {path:'',component:HomeComponent},
   {path:'search/:searchTerm', component:HomeComponent},
   {path:'tag/:tag',component:HomeComponent},
   {path:'food/:id', component:FoodPageComponent},
   {path:'cart-page', component: CartPageComponent},
+  {path:'checkout', component: CheckoutPageComponent},
+  {path:'payment', component: PaymentPageComponent},
+  {path:'orders', component: OrdersPageComponent},
   {path:'login', component:LoginPageComponent},
   {path:'register', component:RegisterPageComponent},
   {path:'wishlist', component: WishlistPageComponent},
   {path:'dashboard', component: DashboardPageComponent},
-  { path: 'reservation', component: ReservationComponent },
 ];
 
 @NgModule({

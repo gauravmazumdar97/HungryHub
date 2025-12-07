@@ -17,8 +17,8 @@ input{
     font-weight: 400;
     outline: none;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    transition: all 0.2s ease, color 0.5s ease;
-    color: var(--text-color);
+    transition: all 0.2s ease;
+    color: #282c3f;
     backdrop-filter: blur(10px);
 }
 
