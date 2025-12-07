@@ -19,7 +19,7 @@ router.get('/my-wishlist', asyncHandler(
 
     const wishlistItems = await WishlistModel.find({ user: req.user.id })
       .populate('food');
-
+    
     // Filter out items where the 'food' reference is null 
     // (This happens if the food was deleted from the database but not the wishlist)
     const validWishlistItems = wishlistItems.filter(item => item.food !== null);
@@ -59,9 +59,9 @@ router.post('/add/:foodId', asyncHandler(
     });
 
     try {
-        await wishlistItem.save();
-        await wishlistItem.populate('food');
-        res.send(wishlistItem);
+    await wishlistItem.save();
+    await wishlistItem.populate('food');
+    res.send(wishlistItem);
     } catch (error: any) {
         // Error Code 11000 = Duplicate Key Error in MongoDB
         if (error.code === 11000) {
