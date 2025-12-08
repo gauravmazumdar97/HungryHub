@@ -18,6 +18,7 @@ export class HeaderComponent implements OnInit{
   user!:User;
   isHomePage: boolean = false;
   isDarkMode = false;
+  isAuthPage: boolean = false;
 
   constructor(
     cartService:CartService,
@@ -55,7 +56,9 @@ export class HeaderComponent implements OnInit{
   private checkRoute(): void {
     const currentUrl = this.router.url;
     // Hide back button on home page (exact match or search/tag routes which are also home)
-    this.isHomePage = currentUrl === '/' || currentUrl.startsWith('/search/') || currentUrl.startsWith('/tag/');
+    this.isHomePage = currentUrl === '/home' || currentUrl.startsWith('/search/') || currentUrl.startsWith('/tag/');
+    // Hide cart on login and register pages (including root path which now shows login)
+    this.isAuthPage = currentUrl === '/' || currentUrl.includes('/login') || currentUrl.includes('/register');
   }
 
   logout(){
