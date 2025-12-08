@@ -16,7 +16,7 @@ export class LoginPageComponent implements OnInit {
   constructor(
     private formBuilder:FormBuilder,
     private userService:UserService,
-    private actiavtedRoute: ActivatedRoute,
+    private activatedRoute: ActivatedRoute,
     private router: Router
     ) {}
 
@@ -27,7 +27,7 @@ export class LoginPageComponent implements OnInit {
     });
     //loginForm.controls.email
 
-    this.returnUrl = this.actiavtedRoute.snapshot.queryParams.returnUrl;   //?returnURl value
+    this.returnUrl = this.activatedRoute.snapshot.queryParams.returnUrl;   //?returnURl value
   }
 
   get fc(){
@@ -41,7 +41,9 @@ export class LoginPageComponent implements OnInit {
     
     this.userService.login({email:this.fc.email.value,
         password: this.fc.password.value}).subscribe(()=> {
-          this.router.navigateByUrl(this.returnUrl);
+          // Navigate to returnUrl if provided, otherwise go to dashboard
+          const targetUrl = this.returnUrl || '/dashboard';
+          this.router.navigateByUrl(targetUrl);
         });
   }
 }
