@@ -12,7 +12,8 @@ import { PaymentPageComponent } from './components/pages/payment-page/payment-pa
 import { OrdersPageComponent } from './components/pages/orders-page/orders-page.component';
  
 const routes: Routes = [
-  {path:'',component:HomeComponent},
+  {path:'',component:LoginPageComponent},
+  {path:'home',component:HomeComponent},
   {path:'search/:searchTerm', component:HomeComponent},
   {path:'tag/:tag',component:HomeComponent},
   {path:'food/:id', component:FoodPageComponent},

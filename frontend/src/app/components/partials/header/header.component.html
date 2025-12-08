@@ -39,7 +39,7 @@
                     </a>
                     <div class="menu">
                         <a routerLink="/orders">
-                            <i class="fas fa-receipt"></i>
+                            <i class="fas fa-receipt"></i>  
                             <span>Orders</span>
                         </a>
                         <a (click)="logout()">
@@ -49,7 +49,7 @@
                     </div>
                 </li>
               
-                <li>
+                <li *ngIf="!isAuthPage">
                     <a routerLink="/cart-page" class="cart-link">
                         <i class="fas fa-shopping-cart"></i>
                         <span>Cart</span>

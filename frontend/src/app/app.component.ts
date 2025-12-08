@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
   }
 
   private updateFooterVisibility(url: string): void {
-    // Hide footer on login and register pages
-    this.showFooter = !url.includes('/login') && !url.includes('/register');
+    // Hide footer on login and register pages (including root path which now shows login)
+    this.showFooter = url !== '/' && !url.includes('/login') && !url.includes('/register');
   }
 }
