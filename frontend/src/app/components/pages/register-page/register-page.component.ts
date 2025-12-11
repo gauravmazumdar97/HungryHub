@@ -53,8 +53,16 @@ export class RegisterPageComponent implements OnInit {
       address: fv.address
     };
 
-    this.userService.register(user).subscribe(_ => {
+    this.userService.register(user).subscribe((registeredUser) => {
+      // If returnUrl is provided, use it (user was trying to access a specific page)
+      if (this.returnUrl) {
       this.router.navigateByUrl(this.returnUrl);
+      } else {
+        // Otherwise, route based on user role
+        // Admin users go to dashboard, regular users go to home page
+        const targetUrl = registeredUser.isAdmin ? '/dashboard' : '/home';
+        this.router.navigateByUrl(targetUrl);
+      }
     })
 
   }

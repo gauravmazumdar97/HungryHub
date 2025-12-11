@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
+import { LoadingService } from 'src/app/services/loading.service';
 
 
 @Component({
@@ -17,7 +18,8 @@ export class LoginPageComponent implements OnInit {
     private formBuilder:FormBuilder,
     private userService:UserService,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private loadingService: LoadingService
     ) {}
 
   ngOnInit(): void {
@@ -38,12 +40,28 @@ export class LoginPageComponent implements OnInit {
     this.isSubmitted = true;
     if(this.loginForm.invalid) return;
 
+    // Show loading indicator
+    this.loadingService.showLoading();
     
     this.userService.login({email:this.fc.email.value,
-        password: this.fc.password.value}).subscribe(()=> {
-          // Navigate to returnUrl if provided, otherwise go to dashboard
-          const targetUrl = this.returnUrl || '/dashboard';
-          this.router.navigateByUrl(targetUrl);
+        password: this.fc.password.value}).subscribe({
+          next: (user) => {
+            // setTimeout(() => {
+              // Hide loading before navigation
+              this.loadingService.hideLoading();
+              user.isAdmin ? this.returnUrl = '/dashboard' : this.returnUrl = '/home';
+
+              // If returnUrl is provided, use it (user was trying to access a specific page)
+              if (this.returnUrl) {
+                this.router.navigateByUrl(this.returnUrl);
+              }
+            // }, 2000);
+          },
+          error: (error) => {
+            // Hide loading on error
+            this.loadingService.hideLoading();
+            console.error('Login error:', error);
+          }
         });
   }
 }

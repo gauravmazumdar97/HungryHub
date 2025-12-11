@@ -69,6 +69,13 @@ export class OrdersPageComponent implements OnInit {
 
   goToHome(): void {
     this.router.navigateByUrl('/');
+
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    if (user?.isAdmin) {
+      this.router.navigateByUrl('/dashboard');
+    } else {
+      this.router.navigateByUrl('/home');
+    }
   }
 
   goToCheckout(): void {

@@ -98,15 +98,44 @@ export class PaymentPageComponent implements OnInit {
 
     this.isProcessing = true;
 
-    // Step 1: Create Razorpay order on backend
+    // Step 1: Try to create Razorpay order on backend
     this.orderService.createRazorpayOrder().subscribe({
       next: (razorpayOrder) => {
         this.openRazorpayCheckout(razorpayOrder);
       },
       error: (errorResponse) => {
+        // If Razorpay is not configured, fall back to dummy payment
+        const errorMessage = errorResponse.error || '';
+        const errorString = typeof errorMessage === 'string' ? errorMessage : JSON.stringify(errorMessage);
+        
+        if (errorString.includes('Razorpay') && errorString.includes('not configured')) {
+          this.toastrService.info('Using demo payment mode', 'Payment');
+          this.processDummyPayment();
+        } else {
+          this.isProcessing = false;
+          this.toastrService.error(
+            errorString || 'Unable to initiate payment. Please try again.',
+            'Payment Error'
+          );
+        }
+      }
+    });
+  }
+
+  private processDummyPayment() {
+    // Use dummy payment endpoint when Razorpay is not configured
+    this.orderService.pay().subscribe({
+      next: (orderId) => {
+        this.toastrService.success('Payment successful! Order placed successfully.', 'Success');
+        this.cartService.clearCart();
+        setTimeout(() => {
+          this.router.navigateByUrl('/home');
+        }, 1500);
+      },
+      error: (errorResponse) => {
         this.isProcessing = false;
         this.toastrService.error(
-          errorResponse.error || 'Unable to initiate payment. Please try again.',
+          errorResponse.error || 'Payment failed. Please try again.',
           'Payment Error'
         );
       }
@@ -150,12 +179,10 @@ export class PaymentPageComponent implements OnInit {
 
     this.orderService.verifyRazorpayPayment(payload).subscribe({
       next: (orderId) => {
-        this.toastrService.success('Payment successful!', 'Success');
+        this.toastrService.success('Payment successful! Order placed successfully.', 'Success');
         this.cartService.clearCart();
         setTimeout(() => {
-          this.router.navigate(['/orders'], {
-            queryParams: { success: '1', id: orderId }
-          });
+          this.router.navigateByUrl('/home');
         }, 1500);
       },
       error: (errorResponse) => {

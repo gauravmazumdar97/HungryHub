@@ -10,8 +10,14 @@ import { Tag } from 'src/app/shared/models/tag';
 export class TagsComponent implements OnInit {
   tags?:Tag[];
   constructor(foodService:FoodService){
-    foodService.getAllTags().subscribe(serverTags => {
+    foodService.getAllTags().subscribe({
+      next: (serverTags) => {
       this.tags = serverTags;
+      },
+      error: (err) => {
+        console.error('Error loading tags:', err);
+        this.tags = [];
+      }
     })
    }
 

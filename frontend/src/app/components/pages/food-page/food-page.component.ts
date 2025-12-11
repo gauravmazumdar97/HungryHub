@@ -31,10 +31,25 @@ export class FoodPageComponent implements OnInit{
     
     activatedRoute.params.subscribe((params)=>{
       if(params.id) {
-        foodService.getFoodById(params.id).subscribe(serverFood => {
+        foodService.getFoodById(params.id).subscribe({
+          next: (serverFood) => {
           this.food = serverFood;
           if (this.isLoggedIn) {
             this.checkFavorite();
+            }
+          },
+          error: (err) => {
+            console.error('Error loading food:', err);
+            if (err.status === 401 || err.status === 403) {
+              this.toastrService.error('Please login to view food details', 'Authentication Required');
+              this.router.navigateByUrl('/login?returnUrl=' + encodeURIComponent(this.router.url));
+            } else if (err.status === 404) {
+              this.toastrService.error('Food item not found', 'Error');
+              this.router.navigateByUrl('/home');
+            } else {
+              this.toastrService.error('Failed to load food item', 'Error');
+              this.router.navigateByUrl('/home');
+            }
           }
         });
       }

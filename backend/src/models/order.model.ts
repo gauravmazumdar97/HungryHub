@@ -34,6 +34,7 @@ export const OrderSchema = new Schema<Order>(
     paymentId: { type: String },
     totalPrice: { type: Number, required: true },
     items: [{
+      _id: false, // Prevent Mongoose from creating _id for subdocuments
       food: { type: Schema.Types.ObjectId, ref: 'food', required: true },
       price: { type: Number, required: true },
       quantity: { type: Number, required: true }

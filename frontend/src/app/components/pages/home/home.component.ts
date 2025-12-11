@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { FoodService } from 'src/app/services/food.service';
 import { Food } from 'src/app/shared/models/food';
@@ -23,7 +23,8 @@ export class HomeComponent implements OnInit{
     activatedRoute:ActivatedRoute,
     private wishlistService: WishlistService,
     private userService: UserService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private router: Router
   ) { 
     this.isLoggedIn = !!this.userService.currentUser.token;
     
@@ -36,10 +37,23 @@ export class HomeComponent implements OnInit{
       else
         foodsObservable = foodService.getAll();
 
-        foodsObservable.subscribe((serverFoods) => {
+        foodsObservable.subscribe({
+          next: (serverFoods) => {
           this.foods = serverFoods;
           if (this.isLoggedIn) {
             this.loadFavorites();
+            }
+          },
+          error: (err) => {
+            console.error('Error loading foods:', err);
+            // If unauthorized, redirect to login
+            if (err.status === 401 || err.status === 403) {
+              this.toastrService.error('Please login to view food items', 'Authentication Required');
+              this.router.navigateByUrl('/login?returnUrl=' + encodeURIComponent(this.router.url));
+            } else {
+              this.toastrService.error('Failed to load food items. Please try again later.', 'Error');
+            }
+            this.foods = [];
           }
         })
     })

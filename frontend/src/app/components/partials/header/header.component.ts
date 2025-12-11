@@ -69,8 +69,16 @@ export class HeaderComponent implements OnInit{
     return this.user.token;
   }
 
+  get isAdmin(){
+    return this.user.isAdmin;
+  }
+
   goBack(): void {
     this.location.back();
+  }
+
+  hungryHubClick(): void {
+    this.router.navigateByUrl('/');
   }
 
   toggleTheme(): void {

@@ -3,7 +3,8 @@
 <app-not-found
   [visible]="!isLoading && (!wishlistItems || !wishlistItems.length)"
   notFoundMessage="Your Wishlist Is Empty!"
-  resetLinkText="Browse Foods">
+  resetLinkText="Browse Foods"
+  resetLinkRoute="/home">
 </app-not-found>
 
 <div *ngIf="isLoading" class="loading-container">

@@ -28,10 +28,11 @@
           Quick Links
         </h4>
         <ul class="footer-links">
-          <li><a routerLink="/"><i class="fas fa-home"></i> Home</a></li>
-          <li><a routerLink="/dashboard"><i class="fas fa-chart-line"></i> Dashboard</a></li>
-          <li><a routerLink="/orders"><i class="fas fa-receipt"></i> Orders</a></li>
-          <li><a routerLink="/wishlist"><i class="fas fa-heart"></i> Wishlist</a></li>
+          <li><a routerLink="/home"><i class="fas fa-home"></i> Home</a></li>
+          <li *ngIf="!isAuth"><a routerLink="/login"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+          <li *ngIf="isAuth"><a routerLink="/dashboard"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+          <li *ngIf="isAuth && !isAdmin"><a routerLink="/orders"><i class="fas fa-receipt"></i> Orders</a></li>
+          <li *ngIf="isAuth && !isAdmin"><a routerLink="/wishlist"><i class="fas fa-heart"></i> Wishlist</a></li>
         </ul>
       </div>
 
@@ -89,7 +90,7 @@
             </div>
             <div>
               <span class="supervisor-label"><i class="fas fa-chalkboard-teacher"></i> Supervisor</span>
-              <strong class="supervisor-name">Manaza Yagamiti</strong>
+              <strong class="supervisor-name">Manasa Yegamati</strong>
             </div>
           </div>
           <div class="module-badge">

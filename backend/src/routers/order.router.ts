@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import asyncHandler from 'express-async-handler';
+import { Types } from 'mongoose';
 import { HTTP_BAD_REQUEST } from '../constants/http_status';
 import { OrderStatus } from '../constants/order_status';
 import { OrderModel } from '../models/order.model';
@@ -26,6 +27,11 @@ router.post('/create', asyncHandler(async (req: any, res) => {
     return;
   }
 
+  // Debug: Log first item structure (remove in production)
+  if (items.length > 0) {
+    console.log('First item structure:', JSON.stringify(items[0], null, 2));
+  }
+
   // --- STEP 1: CHECK STOCK ---
   for (const item of items) {
     const foodId = item.food.id || item.food;
@@ -50,17 +56,66 @@ router.post('/create', asyncHandler(async (req: any, res) => {
     status: OrderStatus.NEW
   });
 
-  const newOrder = new OrderModel({
-    items,
+  // Transform items to only include food ObjectId (not full food object)
+  const transformedItems = items.map((item: any) => {
+    // Extract food ID - handle both object with id property and direct ID
+    let foodId = item.food;
+    if (item.food && typeof item.food === 'object' && !(item.food instanceof Types.ObjectId)) {
+      // If it's an object, extract the ID
+      foodId = item.food.id || item.food._id;
+    }
+    
+    // Convert to ObjectId if it's a string
+    let foodObjectId: Types.ObjectId;
+    if (foodId instanceof Types.ObjectId) {
+      foodObjectId = foodId;
+    } else if (typeof foodId === 'string') {
+      // Validate that it's a valid ObjectId string
+      if (Types.ObjectId.isValid(foodId)) {
+        foodObjectId = new Types.ObjectId(foodId);
+      } else {
+        throw new Error(`Invalid food ID format: ${foodId}`);
+      }
+    } else {
+      throw new Error(`Unexpected food ID type: ${typeof foodId}`);
+    }
+    
+    return {
+      food: foodObjectId,
+      price: Number(item.price),
+      quantity: Number(item.quantity)
+    };
+  });
+
+  // Debug: Log transformed items (first item only)
+  if (transformedItems.length > 0) {
+    console.log('Transformed first item:', {
+      food: transformedItems[0].food.toString(),
+      price: transformedItems[0].price,
+      quantity: transformedItems[0].quantity
+    });
+  }
+
+  // Create order with transformed items
+  const orderData = {
+    items: transformedItems,
     name,
     totalPrice,
     address,
     addressLatLng: addressLatLng || { lat: 0, lng: 0 },
-    user: req.user.id,
+    user: new Types.ObjectId(req.user.id),
     status: OrderStatus.NEW
-  });
+  };
 
+  const newOrder = new OrderModel(orderData);
+
+  try {
   await newOrder.save();
+  } catch (error: any) {
+    console.error('Order save error:', error);
+    console.error('Order data:', JSON.stringify(orderData, null, 2));
+    throw error;
+  }
 
   // --- STEP 3: DEDUCT STOCK (only after order is created successfully) ---
   // Note: Stock is deducted when order is created, not when payment is made
