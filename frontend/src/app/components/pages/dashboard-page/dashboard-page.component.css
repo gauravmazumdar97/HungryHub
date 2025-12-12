@@ -59,23 +59,27 @@
   backdrop-filter: blur(10px);
 }
 
-.stat-card:hover {
+.stat-card.clickable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.stat-card.clickable:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 30px var(--shadow-color);
+  border-color: #FC8019;
+  background: var(--card-bg);
+}
+
+.stat-card.clickable:active {
+  transform: translateY(-2px) scale(0.98);
+  box-shadow: 0 4px 16px rgba(252, 128, 25, 0.3);
+  border-color: #FC8019;
 }
 
 .stat-card.revenue {
   background: linear-gradient(135deg, #FC8019 0%, #FF8C42 100%);
   color: white;
-}
-
-.stat-card.clickable {
-  cursor: pointer;
-}
-
-.stat-card.clickable:active {
-  transform: translateY(-2px) scale(0.99);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 
 .stat-icon {

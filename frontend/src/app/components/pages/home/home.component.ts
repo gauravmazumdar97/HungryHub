@@ -57,7 +57,10 @@ export class HomeComponent implements OnInit{
           }
         })
     })
+  }
   
+  get isAdmin(): boolean {
+    return this.userService.currentUser.isAdmin;
   }
 
   ngOnInit(): void{

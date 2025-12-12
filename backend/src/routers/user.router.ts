@@ -5,6 +5,7 @@ import asyncHandler from 'express-async-handler';
 import { User, UserModel } from '../models/user.model';
 import { HTTP_BAD_REQUEST } from '../constants/http_status';
 import bcrypt from 'bcryptjs';
+import auth from '../middlewares/auth.mid';
 
 const router = Router();
 const PASSWORD_HASH_SALT_ROUNDS = 10;
@@ -93,5 +94,28 @@ const generateTokenReponse = (user: any) => {
     token: token
   };
 }
+
+// GET ALL USERS (Admin only - excludes logged-in user)
+router.get('/all', auth as any, asyncHandler(
+  async (req: any, res) => {
+    if (!req.user) {
+      res.status(401).send('Unauthorized');
+      return;
+    }
+
+    const currentUser = await UserModel.findById(req.user.id);
+    if (!currentUser?.isAdmin) {
+      res.status(403).send('Admin access required');
+      return;
+    }
+
+    // Get all users except the logged-in user
+    const users = await UserModel.find({ _id: { $ne: req.user.id } })
+      .select('-password') // Exclude password from response
+      .sort({ createdAt: -1 }); // Sort by newest first
+
+    res.json(users);
+  }
+));
 
 export default router;

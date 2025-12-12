@@ -7,7 +7,7 @@
 </app-not-found>
 <ul>
     <li *ngFor="let food of foods" >
-        <a routerLink="/food/{{food.id}}">
+        <a *ngIf="!isAdmin && (food.stock === undefined || food.stock > 0)" routerLink="/food/{{food.id}}">
             <img [src]="food.imageUrl" [alt]="food.name"/>
             <button 
                 class="favorite-btn" 
@@ -40,6 +40,66 @@
                 </div>
             </div>
         </a>
+        <div *ngIf="!isAdmin && food.stock !== undefined && food.stock <= 0" class="food-item-out-of-stock">
+            <img [src]="food.imageUrl" [alt]="food.name"/>
+            <div class="content">
+                <div class="name">
+                    {{food.name}}
+                </div>
+
+                <div class="out-of-stock-badge">
+                    <span>OUT OF STOCK</span>
+                </div>
+
+                <div class="product-item-footer">
+                    <div class="origins">
+                        <span *ngFor="let origin of food.origins">
+                            {{origin}}
+                        </span>
+                    </div>
+                    <div class="cook-time">
+                        <span>🕒</span>
+                        {{food.cookTime}}
+                    </div>
+                </div>
+
+                <div class="price">
+                    <span>
+                        {{food.price | currency}}
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="isAdmin" class="food-item-admin">
+            <img [src]="food.imageUrl" [alt]="food.name"/>
+            <div class="content">
+                <div class="name">
+                    {{food.name}}
+                </div>
+
+                <div class="out-of-stock-badge" *ngIf="food.stock !== undefined && food.stock <= 0">
+                    <span>CURRENTLY OUT OF STOCK</span>
+                </div>
+
+                <div class="product-item-footer">
+                    <div class="origins">
+                        <span *ngFor="let origin of food.origins">
+                            {{origin}}
+                        </span>
+                    </div>
+                    <div class="cook-time">
+                        <span>🕒</span>
+                        {{food.cookTime}}
+                    </div>
+                </div>
+
+                <div class="price">
+                    <span>
+                        {{food.price | currency}}
+                    </span>
+                </div>
+            </div>
+        </div>
 
     </li>
 </ul>

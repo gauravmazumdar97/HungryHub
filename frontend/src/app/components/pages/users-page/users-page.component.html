@@ -1,0 +1,62 @@
+<div class="users-container">
+  <div class="users-content">
+    <app-title title="All Users" fontSize="1.6rem"></app-title>
+
+    <!-- Loading state -->
+    <div class="state-card" *ngIf="isLoading">
+      <div class="state-icon loading">
+        <i class="fas fa-spinner fa-spin"></i>
+      </div>
+      <h2>Loading users...</h2>
+      <p>Please wait a moment.</p>
+    </div>
+
+    <!-- No users state -->
+    <div class="state-card" *ngIf="!isLoading && (!users || users.length === 0)">
+      <div class="state-icon empty">
+        <i class="fas fa-users"></i>
+      </div>
+      <h2>No users found</h2>
+      <p>There are no other users in the system.</p>
+      <button class="primary-btn" (click)="goToDashboard()">
+        <i class="fas fa-arrow-left"></i> Back to Dashboard
+      </button>
+    </div>
+
+    <!-- Users list -->
+    <div class="users-list" *ngIf="!isLoading && users && users.length > 0">
+      <div class="users-header">
+        <h3>Total Users: {{ users.length }}</h3>
+        <button class="secondary-btn" (click)="goToDashboard()">
+          <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </button>
+      </div>
+
+      <div class="users-grid">
+        <div class="user-card" *ngFor="let user of users">
+          <div class="user-avatar">
+            <i class="fas fa-user-circle"></i>
+          </div>
+          <div class="user-info">
+            <h4 class="user-name">{{ user.name }}</h4>
+            <p class="user-email">
+              <i class="fas fa-envelope"></i>
+              {{ user.email }}
+            </p>
+            <p class="user-address" *ngIf="user.address">
+              <i class="fas fa-map-marker-alt"></i>
+              {{ user.address }}
+            </p>
+            <div class="user-badges">
+              <span class="badge" [class.admin-badge]="user.isAdmin" [class.user-badge]="!user.isAdmin">
+                <i class="fas" [ngClass]="user.isAdmin ? 'fa-shield-alt' : 'fa-user'"></i>
+                {{ user.isAdmin ? 'Admin' : 'User' }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

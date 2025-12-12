@@ -10,6 +10,7 @@ import { DashboardPageComponent } from './components/pages/dashboard-page/dashbo
 import { CheckoutPageComponent } from './components/pages/checkout-page/checkout-page.component';
 import { PaymentPageComponent } from './components/pages/payment-page/payment-page.component';
 import { OrdersPageComponent } from './components/pages/orders-page/orders-page.component';
+import { UsersPageComponent } from './components/pages/users-page/users-page.component';
  
 const routes: Routes = [
   {path:'',component:LoginPageComponent},
@@ -25,6 +26,7 @@ const routes: Routes = [
   {path:'register', component:RegisterPageComponent},
   {path:'wishlist', component: WishlistPageComponent},
   {path:'dashboard', component: DashboardPageComponent},
+  {path:'users', component: UsersPageComponent},
 ];
 
 @NgModule({

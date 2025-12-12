@@ -7,41 +7,27 @@
 <div *ngIf="!isLoading && analytics" class="dashboard-container">
   <!-- Admin Overview -->
   <div *ngIf="isAdmin && analytics.overview" class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-icon">📦</div>
-      <div class="stat-info">
-        <h3>{{analytics.overview.totalOrders}}</h3>
-        <p>Total Orders</p>
-      </div>
-    </div>
-    <div class="stat-card">
+    <div class="stat-card clickable" (click)="goToUsers()" title="View all users">
       <div class="stat-icon">👥</div>
       <div class="stat-info">
         <h3>{{analytics.overview.totalUsers}}</h3>
         <p>Total Users</p>
       </div>
     </div>
-    <div class="stat-card">
+    <div class="stat-card clickable" (click)="goToHome()" title="View all foods">
       <div class="stat-icon">🍽️</div>
       <div class="stat-info">
         <h3>{{analytics.overview.totalFoods}}</h3>
         <p>Total Foods</p>
       </div>
     </div>
-    <div class="stat-card">
+    <!-- <div class="stat-card">
       <div class="stat-icon">❤️</div>
       <div class="stat-info">
         <h3>{{analytics.overview.totalWishlists}}</h3>
         <p>Wishlists</p>
       </div>
-    </div>
-    <div class="stat-card revenue">
-      <div class="stat-icon">💰</div>
-      <div class="stat-info">
-        <h3>{{analytics.overview.totalRevenue | currency}}</h3>
-        <p>Total Revenue</p>
-      </div>
-    </div>
+    </div> -->
   </div>
 
   <!-- User Stats -->
@@ -92,7 +78,7 @@
   </div>
 
   <!-- Recent Orders -->
-  <div *ngIf="analytics.recentOrders && analytics.recentOrders.length" class="section">
+  <!-- <div *ngIf="analytics.recentOrders && analytics.recentOrders.length" class="section">
     <h2 class="section-title">{{isAdmin ? 'Recent Orders' : 'My Recent Orders'}}</h2>
     <div class="orders-table">
       <table>
@@ -118,7 +104,7 @@
         </tbody>
       </table>
     </div>
-  </div>
+  </div> -->
 
   <!-- INVENTORY MANAGEMENT (ADMIN ONLY) -->
   <section *ngIf="isAdmin" class="section">

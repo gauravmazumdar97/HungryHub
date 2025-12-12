@@ -283,4 +283,12 @@ export class DashboardPageComponent implements OnInit {
     if (stock < this.lowStockThreshold) return 'row-low';
     return 'row-ok';
   }
+
+  goToHome(): void {
+    this.router.navigateByUrl('/home');
+  }
+
+  goToUsers(): void {
+    this.router.navigateByUrl('/users');
+  }
 }
