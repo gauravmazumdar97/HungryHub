@@ -11,7 +11,8 @@ import { CheckoutPageComponent } from './components/pages/checkout-page/checkout
 import { PaymentPageComponent } from './components/pages/payment-page/payment-page.component';
 import { OrdersPageComponent } from './components/pages/orders-page/orders-page.component';
 import { UsersPageComponent } from './components/pages/users-page/users-page.component';
- 
+ import { BookingPageComponent } from './components/pages/booking-page/booking-page.component';
+
 const routes: Routes = [
   {path:'',component:LoginPageComponent},
   {path:'home',component:HomeComponent},
@@ -27,6 +28,7 @@ const routes: Routes = [
   {path:'wishlist', component: WishlistPageComponent},
   {path:'dashboard', component: DashboardPageComponent},
   {path:'users', component: UsersPageComponent},
+  { path: 'book-table', component: BookingPageComponent },
 ];
 
 @NgModule({

@@ -63,7 +63,9 @@
                         <span class="cart-badge" *ngIf="cartQuantity">{{cartQuantity}}</span>
                     </a>
                 </li>
-
+                <li *ngIf="isAuth">
+  <a routerLink="/book-table" class="book-table-btn">Book a Table</a>
+</li>    
                 <li>
                     <button class="theme-toggle" (click)="toggleTheme()" [title]="isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'">
                         <i class="fas" [ngClass]="isDarkMode ? 'fa-sun' : 'fa-moon'"></i>

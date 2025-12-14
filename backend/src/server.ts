@@ -10,6 +10,7 @@ import userRouter from "./routers/user.router";
 import orderRouter from "./routers/order.router";
 import wishlistRouter from "./routers/wishlist.router";
 import dashboardRouter from './routers/dashboard.router';
+import bookingRouter from './routers/booking.router';
 
 // --- CONFIGURATION ---
 // 1. Load Environment Variables
@@ -31,6 +32,7 @@ const app = express();
 
 // --- MIDDLEWARE ---
 app.use(express.json());
+app.use('/api/bookings', bookingRouter);
 
 // 3. CORS: Allow frontend origins
 app.use(cors({
