@@ -1,0 +1,149 @@
+<div class="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat py-12 px-4 sm:px-6 lg:px-8 relative"
+     style="background-image: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');">
+  
+  <div class="absolute inset-0 bg-black/60 z-0"></div>
+
+  <div class="relative z-10 w-full max-w-4xl bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden border border-white/10">
+    
+    <div class="text-center pt-10 pb-6 px-6">
+      <h1 class="text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-2">
+        Reserve Your Table
+      </h1>
+      <p class="text-gray-300 text-lg">
+        Select your preferred dining experience below.
+      </p>
+    </div>
+
+    <div class="flex flex-wrap justify-center gap-4 px-6 mb-8">
+      <button (click)="selectOption(1)"
+        [ngClass]="selectedOption === 1 ? 'bg-[#e72929] text-white shadow-lg scale-105' : 'bg-gray-800/50 text-gray-300 hover:bg-gray-700'"
+        class="px-6 py-3 rounded-full font-bold transition-all duration-300 border border-transparent focus:outline-none">
+        Standard Table
+      </button>
+
+      <button (click)="selectOption(2)"
+        [ngClass]="selectedOption === 2 ? 'bg-[#e72929] text-white shadow-lg scale-105' : 'bg-gray-800/50 text-gray-300 hover:bg-gray-700'"
+        class="px-6 py-3 rounded-full font-bold transition-all duration-300 border border-transparent focus:outline-none">
+        Pre-Order Menu
+      </button>
+
+      <button (click)="selectOption(3)"
+        [ngClass]="selectedOption === 3 ? 'bg-[#e72929] text-white shadow-lg scale-105' : 'bg-gray-800/50 text-gray-300 hover:bg-gray-700'"
+        class="px-6 py-3 rounded-full font-bold transition-all duration-300 border border-transparent focus:outline-none">
+        Private Hall
+      </button>
+    </div>
+
+    <div *ngIf="selectedOption === 2" class="mx-8 mb-6 p-4 bg-yellow-500/20 border border-yellow-500/50 rounded-lg flex items-start gap-3">
+      <span class="text-2xl">🛒</span>
+      <p class="text-yellow-100 text-sm">
+        <strong>Pre-Order Mode:</strong> We will reserve your table and have the items currently in your <a routerLink="/cart-page" class="underline font-bold hover:text-white">Cart</a> ready upon arrival.
+      </p>
+    </div>
+
+    <div *ngIf="selectedOption === 3" class="mx-8 mb-6 p-4 bg-purple-500/20 border border-purple-500/50 rounded-lg flex items-start gap-3">
+      <span class="text-2xl">🎉</span>
+      <p class="text-purple-100 text-sm">
+        <strong>Private Hall:</strong> Perfect for parties! Select a package below (Silver, Gold, or Platinum) for a fixed price per head.
+      </p>
+    </div>
+
+    <form [formGroup]="bookingForm" (ngSubmit)="submitBooking()" class="bg-black/20 p-8 sm:p-12">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <div class="relative group">
+          <label class="block text-gray-400 text-sm font-bold mb-2 ml-1">Your Name</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <span class="text-gray-400 text-lg">👤</span>
+            </div>
+            <input type="text" formControlName="name" placeholder="John Doe"
+              class="w-full bg-gray-900/50 text-white border border-gray-600 rounded-lg py-3 pl-10 pr-4 focus:outline-none focus:border-[#e72929] focus:ring-1 focus:ring-[#e72929] transition-colors placeholder-gray-500">
+          </div>
+        </div>
+
+        <div class="relative group">
+          <label class="block text-gray-400 text-sm font-bold mb-2 ml-1">Phone Number</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <span class="text-gray-400 text-lg">📞</span>
+            </div>
+            <input type="text" formControlName="phone" placeholder="+91 98765 43210"
+              class="w-full bg-gray-900/50 text-white border border-gray-600 rounded-lg py-3 pl-10 pr-4 focus:outline-none focus:border-[#e72929] focus:ring-1 focus:ring-[#e72929] transition-colors placeholder-gray-500">
+          </div>
+        </div>
+
+        <div class="relative group">
+          <label class="block text-gray-400 text-sm font-bold mb-2 ml-1">Date</label>
+          <input type="date" formControlName="date"
+            class="w-full bg-gray-900/50 text-white border border-gray-600 rounded-lg py-3 px-4 focus:outline-none focus:border-[#e72929] focus:ring-1 focus:ring-[#e72929] transition-colors [color-scheme:dark]">
+        </div>
+
+        <div class="relative group md:col-span-2">
+          <label class="block text-gray-400 text-sm font-bold mb-2 ml-1">Select Time Slot (2 Hours)</label>
+          
+          <p *ngIf="!bookingForm.get('date')?.value" class="text-gray-500 text-sm italic mb-3">
+             Please select a date first to see available slots.
+          </p>
+
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <button type="button" 
+              *ngFor="let slot of availableTimeSlots"
+              (click)="selectTimeSlot(slot.start)"
+              [disabled]="isSlotTaken(slot.start)"
+              [ngClass]="{
+                'bg-gray-800/30 text-gray-600 cursor-not-allowed border-gray-800': isSlotTaken(slot.start),
+                'bg-[#e72929] text-white shadow-lg scale-105 border-[#e72929]': bookingForm.get('time')?.value === slot.start,
+                'bg-gray-900/50 text-gray-300 hover:bg-gray-700 border-gray-600': !isSlotTaken(slot.start) && bookingForm.get('time')?.value !== slot.start
+              }"
+              class="py-3 px-2 text-xs sm:text-sm rounded-lg border font-medium transition-all duration-200 flex flex-col items-center justify-center">
+              
+              <span>{{ slot.label }}</span>
+              <span *ngIf="isSlotTaken(slot.start)" class="text-[10px] text-red-500/70 font-bold mt-1 uppercase">Unavailable</span>
+            </button>
+          </div>
+
+          <input type="hidden" formControlName="time">
+        </div>
+
+        <div class="relative group md:col-span-2" *ngIf="selectedOption !== 3">
+          <label class="block text-gray-400 text-sm font-bold mb-2 ml-1">Number of Guests</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <span class="text-gray-400 text-lg">👥</span>
+            </div>
+            <input type="number" formControlName="guests" min="1" max="20" placeholder="2"
+              class="w-full bg-gray-900/50 text-white border border-gray-600 rounded-lg py-3 pl-10 pr-4 focus:outline-none focus:border-[#e72929] focus:ring-1 focus:ring-[#e72929] transition-colors">
+          </div>
+        </div>
+
+        <div class="relative group md:col-span-2" *ngIf="selectedOption === 3">
+          <label class="block text-gray-400 text-sm font-bold mb-2 ml-1">Select Hall Package</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <span class="text-gray-400 text-lg">🏆</span>
+            </div>
+            <select formControlName="hallPackage"
+              class="w-full bg-gray-900/50 text-white border border-gray-600 rounded-lg py-3 pl-10 pr-4 focus:outline-none focus:border-[#e72929] focus:ring-1 focus:ring-[#e72929] transition-colors appearance-none">
+              <option value="Silver" class="bg-gray-800">Silver Package (Starters + Mains)</option>
+              <option value="Gold" class="bg-gray-800">Gold Package (Full Course + Mocktails)</option>
+              <option value="Platinum" class="bg-gray-800">Platinum Package (Premium All Access)</option>
+            </select>
+            <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-400">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="mt-10">
+        <button type="submit" 
+          class="w-full bg-gradient-to-r from-[#e72929] to-[#ff4d4d] text-white font-bold text-xl py-4 rounded-xl shadow-lg hover:shadow-red-500/30 hover:scale-[1.02] active:scale-95 transition-all duration-300">
+          Confirm Reservation
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

@@ -34,6 +34,7 @@ import { PaymentPageComponent } from './components/pages/payment-page/payment-pa
 import { OrdersPageComponent } from './components/pages/orders-page/orders-page.component';
 import { UsersPageComponent } from './components/pages/users-page/users-page.component';
 import { FooterComponent } from './components/partials/footer/footer.component';
+import { BookingPageComponent } from './components/pages/booking-page/booking-page.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { FooterComponent } from './components/partials/footer/footer.component';
     OrdersPageComponent,
     UsersPageComponent,
     FooterComponent,
+    BookingPageComponent,
   ],
   imports: [
     BrowserModule,
