@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { Booking } from '../shared/models/booking';
 
 // Ensure this matches your backend port
-const BOOKING_URL = 'http://localhost:9000/api/bookings';
+const BOOKING_URL = 'http://localhost:7000/api/bookings';
 
 @Injectable({
   providedIn: 'root'

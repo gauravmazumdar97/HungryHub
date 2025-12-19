@@ -236,7 +236,7 @@ export class DashboardPageComponent implements OnInit {
   saveItem(item: Food) {
     if (!this.isDirty(item)) return;
 
-    const updateUrl = `http://localhost:9000/api/foods/${item.id}`;
+    const updateUrl = `http://localhost:7000/api/foods/${item.id}`;
 
     this.http
       .put(updateUrl, { price: item.price, stock: this.getNormalizedStock(item) })
