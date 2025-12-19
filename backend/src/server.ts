@@ -32,7 +32,6 @@ const app = express();
 
 // --- MIDDLEWARE ---
 app.use(express.json());
-app.use('/api/bookings', bookingRouter);
 
 // 3. CORS: Allow frontend origins
 app.use(cors({
@@ -46,6 +45,7 @@ app.use("/api/users", userRouter);
 app.use("/api/orders", orderRouter);
 app.use("/api/wishlist", wishlistRouter);
 app.use("/api/analytics", dashboardRouter);
+app.use('/api/bookings', bookingRouter);
 
 // 4. GLOBAL ERROR HANDLER (Crucial for express-async-handler)
 // This catches any error thrown in your routers and sends a JSON response

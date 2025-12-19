@@ -30,3 +30,5 @@ export const WISHLIST_CHECK_URL = WISHLIST_URL + '/check/';
 export const ANALYTICS_URL = BASE_URL + '/api/analytics';
 export const ANALYTICS_DASHBOARD_URL = ANALYTICS_URL + '/dashboard';
 
+export const BOOKING_URL = BASE_URL + '/api/bookings';
+
