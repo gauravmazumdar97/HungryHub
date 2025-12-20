@@ -4,23 +4,22 @@ import { BookingModel } from '../models/booking.model';
 
 const router = Router();
 
-// GET Bookings by Date (to disable used slots)
+// 1. GET Availability (For your Time Slots)
 router.get('/:date', asyncHandler(async (req, res) => {
     const date = req.params.date;
-    // Find all bookings for this date that are NOT cancelled
     const bookings = await BookingModel.find({ date, status: { $ne: 'cancelled' } });
-    
-    // Return just the taken time slots
     const takenSlots = bookings.map(b => b.time);
     res.send(takenSlots);
 }));
 
-// ... Your existing POST route is here ...
-
+// 2. POST Create Booking (Saves all 3 types)
 router.post(
   '/',
   asyncHandler(async (req, res) => {
-    const { name, email, phone, date, time, guests, type, hallPackage, cartItems } = req.body;
+    const { 
+      name, email, phone, date, time, guests, type, 
+      hallPackage, cartItems, totalPrice 
+    } = req.body;
 
     const newBooking = {
       name,
@@ -30,8 +29,9 @@ router.post(
       time,
       guests,
       type,
-      hallPackage,
-      cartItems,
+      hallPackage, // Will be saved if sent (Option 3)
+      cartItems,   // Will be saved if sent (Option 2)
+      totalPrice,
       status: 'pending'
     };
 

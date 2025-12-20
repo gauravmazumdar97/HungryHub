@@ -8,8 +8,9 @@ export interface Booking {
   time: string;
   guests: number;
   type: string;          // 'standard', 'preorder', 'hall'
-  hallPackage?: string;  // 'Silver', 'Gold', 'Platinum'
-  cartItems?: any[];     // Stores food items for Option 2
+  hallPackage?: string;  // 'Silver', 'Gold', 'Platinum' (Optional)
+  cartItems?: any[];     // Stores the food list (Optional)
+  totalPrice?: number;   // Good to save the price if pre-ordering
   status: string;
 }
 
@@ -19,11 +20,12 @@ export const BookingSchema = new Schema<Booking>(
     email: { type: String, required: true },
     phone: { type: String, required: true },
     date: { type: String, required: true },
-    time: { type: String, required: true },
+    time: { type: String, required: true }, // Stores the start time (e.g., "20:00")
     guests: { type: Number, required: true },
     type: { type: String, required: true },
-    hallPackage: { type: String },
-    cartItems: { type: Array },
+    hallPackage: { type: String, default: '' },
+    cartItems: { type: Array, default: [] },
+    totalPrice: { type: Number, default: 0 },
     status: { type: String, default: 'pending' }
   },
   {
