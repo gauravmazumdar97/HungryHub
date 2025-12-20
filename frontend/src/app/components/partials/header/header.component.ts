@@ -13,7 +13,7 @@ import { User } from '../../../shared/models/user';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit{
-
+ 
   cartQuantity=0;
   user!:User;
   isHomePage: boolean = false;
