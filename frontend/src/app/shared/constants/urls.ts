@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:9000';
+const BASE_URL = 'http://localhost:7000';
 
 export const FOODS_URL = BASE_URL + '/api/foods';
 export const FOODS_TAGS_URL = FOODS_URL + '/tags';
@@ -29,4 +29,6 @@ export const WISHLIST_CHECK_URL = WISHLIST_URL + '/check/';
 
 export const ANALYTICS_URL = BASE_URL + '/api/analytics';
 export const ANALYTICS_DASHBOARD_URL = ANALYTICS_URL + '/dashboard';
+
+export const BOOKING_URL = BASE_URL + '/api/bookings';
 

@@ -17,7 +17,7 @@ export class AuthInterceptor implements HttpInterceptor {
     const token = this.userService.currentUser.token;
     
     // Only add token if it exists and the request is to our API
-    if (token && request.url.includes('localhost:9000')) {
+    if (token && request.url.includes('localhost:7000')) {
       const authRequest = request.clone({
         setHeaders: {
           'Authorization': `Bearer ${token}`
