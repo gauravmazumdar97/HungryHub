@@ -40,6 +40,17 @@
     <div class="checkout">
         <div>
             <div class="foods-count">{{cart.totalCount}}</div>
+            <div class="coupon-section">
+                <div class="input-group" *ngIf="!isCouponApplied">
+                    <input type="text" [(ngModel)]="couponCode" placeholder="Coupon Code">
+                    <button (click)="applyCoupon()">Apply</button>
+                </div>
+    
+                <div class="success-msg" *ngIf="isCouponApplied">
+                    <span class="msg-text">✔ Coupon Applied</span>
+                    <span class="discount-amount">- {{discountAmount | currency}}</span>
+                </div>
+            </div>
             <div class="total-price">{{cart.totalPrice|currency}}</div>
         </div>
 
