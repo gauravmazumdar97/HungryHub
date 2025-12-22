@@ -134,9 +134,20 @@ router.post('/create', asyncHandler(async (req: any, res) => {
 
 // current in-progress order (status NEW)
 router.get('/newOrderForCurrentUser', asyncHandler(async (req: any, res) => {
+  if (!req.user) {
+    res.status(401).send('Unauthorized');
+    return;
+  }
+  
   const order = await getNewOrderForCurrentUser(req);
-  if (order) res.send(order);
-  else res.status(HTTP_BAD_REQUEST).send();
+  if (order) {
+    res.send(order);
+  } else {
+    // Check if user has any orders (for debugging)
+    const anyOrder = await OrderModel.findOne({ user: req.user.id });
+    console.log('No NEW order found. User has any order:', anyOrder ? `Yes, status: ${anyOrder.status}` : 'No orders at all');
+    res.status(404).send({ message: 'No active (NEW) order found' });
+  }
 }));
 
 // ✅ NEW: all orders for current user (order history)
@@ -403,5 +414,11 @@ export default router;
 
 async function getNewOrderForCurrentUser(req: any) {
   if (!req.user) return null;
-  return await OrderModel.findOne({ user: req.user.id, status: OrderStatus.NEW });
+  // Mongoose automatically converts string IDs to ObjectId in queries
+  const order = await OrderModel.findOne({ 
+    user: req.user.id, 
+    status: OrderStatus.PAYED 
+  }).populate('items.food');
+  
+  return order;
 }

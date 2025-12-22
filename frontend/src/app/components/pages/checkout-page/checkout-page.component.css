@@ -1,16 +1,17 @@
 .container{
-    margin-top: 2rem;
+    margin: 2rem auto 6rem auto;
     display: flex;
-    margin: 0 2rem 6rem 2rem;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     gap: 2rem;
     background: transparent;
-    padding: 3rem;
+    padding: 3rem 2rem;
     animation: fadeIn 0.6s ease;
     position: relative;
     z-index: 1;
     min-height: calc(100vh - 200px);
+    max-width: 1600px;
+    box-sizing: border-box;
   }
   
   .content{
@@ -23,6 +24,7 @@
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
     animation: slideIn 0.6s ease;
     border: 1px solid rgba(255, 255, 255, 0.3);
+    margin: 0 auto;
   }
 
   
@@ -322,10 +324,10 @@
   }
   
   .buttons-container{
-    flex-basis: 100%;
+    width: 100%;
     display: flex;
     justify-content: center;
-    margin-top: 2rem;
+    margin-top: 0;
   }
   
   .buttons{
